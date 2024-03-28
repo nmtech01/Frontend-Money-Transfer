@@ -17,9 +17,9 @@ function index() {
                                 <div className="hero-content mx-auto w-100 h-100 d-flex flex-column">
                                     <div className="row g-0">
                                         <div className="col-10 col-lg-9 mx-auto">
-                                            <div className="logo mt-5 mb-5 mb-md-0"> <a className="d-flex" href="index.html" title="HTML Template">
+                                            <div className="logo mt-5 mb-5 mb-md-0"> <Link className="d-flex" to="/" title="HTML Template">
                                                 <img src="/src/assets/images/logo.png" width="80" height="60" alt="" />
-                                            </a> </div>
+                                            </Link> </div>
                                         </div>
                                     </div>
                                     <div className="row g-0 my-auto">
@@ -49,7 +49,11 @@ function index() {
                                                 <label htmlFor="loginPassword" className="form-label">Password</label>
                                                 <input type="password" className="form-control" id="loginPassword" required placeholder="Enter Password" />
                                             </div>
-                                            <div className="d-grid mt-4 mb-3"><button className="btn btn-primary" type="submit">Sign Up</button></div>
+                                            <Link to="/">
+                                            <div className="d-grid mt-4 mb-3">
+                                               
+                                                <button className="btn btn-primary" type="submit">Sign Up</button></div>
+                                                </Link>
                                         </form>
                                         <p className="text-3 text-center text-muted">Already have an account? <Link  className="btn-link" to="/">Login</Link></p>
                                     </div>

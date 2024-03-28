@@ -19,9 +19,9 @@ function index() {
                 <div className="hero-content mx-auto w-100 h-100 d-flex flex-column">
                   <div className="row g-0">
                     <div className="col-10 col-lg-9 mx-auto">
-                      <div className="logo mt-5 mb-5 mb-md-0"> <a className="d-flex" href="index.html" title="">
+                      <div className="logo mt-5 mb-5 mb-md-0"> <Link className="d-flex" to="/" title="">
                         <img src="/src/assets/images/logo.png" width="80" height="60" alt="" />
-                      </a> </div>
+                      </Link> </div>
                     </div>
                   </div>
                   <div className="row g-0 my-auto">

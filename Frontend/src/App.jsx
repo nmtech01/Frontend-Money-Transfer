@@ -6,6 +6,7 @@ import Register from '../src/components/Register/index'
 import Dashboard from '../src/components/Dashboard/index'
 import Requestmoney from '../src/components/RequestMoney/index'
 import MyProfile from '../src/components/MyProfile/index'
+import ChangePassword from '../src/components/ChangePassword/index'
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route exact path="/request-money" element={<Requestmoney />} />
           <Route exact path="/my-profile" element={<MyProfile />} />
+          <Route exact path="/change-password" element={<ChangePassword />} />
 
 
 

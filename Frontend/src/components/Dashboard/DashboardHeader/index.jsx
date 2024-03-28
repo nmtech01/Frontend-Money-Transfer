@@ -40,7 +40,7 @@ const index = () => {
                 <div className="container">
                     <div className="header-row">
                         <div className="header-column justify-content-start">
-                            <div className="logo me-3"> <a className="d-flex" href="/" title="HTML Template">
+                            <div className="logo me-3"> <a className="d-flex" href="/dashboard" title="HTML Template">
                                 <img src="/src/assets/images/logo.png" width="80" height="60" alt="" />
                             </a> </div>
                             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#header-nav"> <span></span> <span></span> <span></span> </button>
@@ -66,14 +66,14 @@ const index = () => {
                                             <span className="text-5"><i className="far fa-bell"></i></span>
                                             <span className="count">3</span>
                                         </a>
-                                        <ul className={`dropdown-menu ${isNotificationsOpen ? 'show' : ''}`} style={{ left: '-100%' }}>
+                                        <ul className={`dropdown-menu ${isNotificationsOpen ? 'show' : ''}`} style={{ left: '-450%' }}>
                                             <li className="text-center text-3 py-2">Notifications (3)</li>
                                             <li className="dropdown-divider mx-n3"></li>
                                             <li><a className="dropdown-item" href="#"><i className="fas fa-bell"></i>A new digital FIRC document is available for you to download<span className="text-1 text-muted d-block">22 Jul 2021</span></a></li>
                                             <li><a className="dropdown-item" href="#"><i className="fas fa-bell"></i>Updates to our privacy policy. Please read.<span className="text-1 text-muted d-block">04 March 2021</span></a></li>
                                             <li><a className="dropdown-item" href="#"><i className="fas fa-bell"></i>Update about fees<span className="text-1 text-muted d-block">18 Feb 2021</span></a></li>
                                             <li className="dropdown-divider mx-n3"></li>
-                                            <li><a className="dropdown-item text-center text-primary px-0" href="notifications.html">See all Notifications</a></li>
+                                            <li><a className="dropdown-item text-center text-primary px-0" href="#">See all Notifications</a></li>
                                         </ul>
                                     </li>
 
@@ -81,13 +81,13 @@ const index = () => {
                                         <a className="px-0 dropdown-toggle" href="#">
                                             <img className="rounded-circle" src="/src/assets/images/profile-thumb-sm.jpg" alt="" />
                                         </a>
-                                        <ul className={`dropdown-menu ${isProfileOpen ? 'show' : ''}`} style={{ left: '-100%' }}>
+                                        <ul className={`dropdown-menu ${isProfileOpen ? 'show' : ''}`} style={{ left: '-450%' }}>
                                             <li className="text-center text-3 py-2">Hi, Smith Rhodes</li>
                                             <li className="dropdown-divider mx-n3"></li>
                                             <li><Link  className="dropdown-item" to="/my-profile"><i className="fas fa-user"></i> My Profile</Link></li>
-                                            <li><a className="dropdown-item" href="change-password.html"><i className="fas fa-key"></i> Change password</a></li>
+                                            <li><Link className="dropdown-item" to="/change-password" ><i className="fas fa-key"></i> Change password</Link></li>
                                             <li className="dropdown-divider mx-n3"></li>
-                                            <li><a className="dropdown-item" href="index.html"><i className="fas fa-sign-out-alt"></i> Sign Out</a></li>
+                                            <li><Link className="dropdown-item" to="/" ><i className="fas fa-sign-out-alt"></i> Sign Out</Link></li>
                                         </ul>
                                     </li>
 
@@ -97,6 +97,7 @@ const index = () => {
                     </div>
                 </div>
             </header>
+            
 
         </>
 
