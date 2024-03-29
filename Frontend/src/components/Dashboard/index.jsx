@@ -1,12 +1,16 @@
-import { useState, } from 'react'
+import { useEffect, useState, } from 'react'
 import Header from "../Dashboard/DashboardHeader/index";
 import Footer from "../Dashboard/DashboardFooter/index"
 import { Link } from 'react-router-dom';
 import Aside from "../Dashboard/DashboardAside/index"
+import { getUserProfileApi } from '../../services/authService';
 
 
 function index() {
   const [count, setCount] = useState(0)
+  useEffect(()=>{
+  getUserProfileApi()
+  },[])
 
   return (
     <>

@@ -1,10 +1,73 @@
-import { useState, } from 'react'
-import Header from "../Header/Header";
-import { Link } from 'react-router-dom';
+import React,{ useState, } from 'react'
+import { Link,useNavigate} from "react-router-dom";
+import { toast } from "react-toastify";
+import { emailReg } from "../../utilities/validators";
+import Spinner from "../../commonComponent/Spinner";
+import { signup, sigupApi } from "../../services/authService";
 
 
 function index() {
-
+    const navigate=useNavigate();
+    const toastId = React.useRef(null);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+  
+    const handleSubmit = (e) => {
+        e.preventDefault();
+      var pattern = new RegExp(emailReg);
+      var resultemail = pattern.test(email);
+      if (firstName === "") {
+        if (!toast.isActive(toastId.current)) {
+          toastId.current = toast.error("Please enter first name");
+        }
+        return;
+      }
+      if (lastName === "") {
+        if (!toast.isActive(toastId.current)) {
+          toastId.current = toast.error("Please enter last name");
+        }
+        return;
+      }
+      if (resultemail === false) {
+        if (!toast.isActive(toastId.current)) {
+          toastId.current = toast.error("Please enter valid email");
+        }
+        return;
+      }
+      if (password === "") {
+        if (!toast.isActive(toastId.current)) {
+          toastId.current = toast.error("Please enter valid password");
+        }
+        return;
+      }
+      setIsLoading(true);
+      const param = {
+        "first_name":firstName,
+        "last_name":lastName,
+        "email":email,
+        "password":password
+    };
+       console.log("paramsss",param);
+      sigupApi(param)
+        .then((resp) => {
+            setIsLoading(false);
+            if(resp?.data?.status==200){
+                toastId.current = toast.success(resp?.data?.message);
+                navigate('/')
+                
+            }
+            else{
+                toastId.current = toast.error(resp?.data?.message);
+            }
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          toastId.current = toast.error(error);
+        });
+    };
     return (
         <>
             <div id="main-wrapper">
@@ -38,24 +101,55 @@ function index() {
                                         <h3 className="fw-400 mb-4">Sign Up</h3>
                                         <form id="loginForm" method="post">
                                             <div className="mb-3">
-                                                <label htmlFor="fullName" className="form-label">Full Name</label>
-                                                <input type="text" className="form-control" id="fullName" required placeholder="Enter Your Name" />
+                                                <label htmlFor="firstName" className="form-label">First Name</label>
+                                                <input 
+                                                 value={firstName}
+                                                 onChange={(e) => setFirstName(e.target.value)}
+                                                type="text" className="form-control" id="firstName" 
+                                                // required 
+                                                placeholder="Enter Your First Name" />
+                                            </div>
+                                            <div className="mb-3">
+                                                <label htmlFor="lastName" className="form-label">Last Name</label>
+                                                <input 
+                                                 value={lastName}
+                                                 onChange={(e) => setLastName(e.target.value)}
+                                                type="text" className="form-control" id="lastName" 
+                                                // required 
+                                                placeholder="Enter Your Last Name" />
                                             </div>
                                             <div className="mb-3">
                                                 <label htmlFor="emailAddress" className="form-label">Email Address</label>
-                                                <input type="email" className="form-control" id="emailAddress" required placeholder="Enter Your Email" />
+                                                <input 
+                                                 value={email}
+                                                 onChange={(e) => setEmail(e.target.value)}
+                                                type="email" className="form-control" id="emailAddress" 
+                                                
+                                                // required
+                                                
+                                                placeholder="Enter Your Email" />
                                             </div>
                                             <div className="mb-3">
                                                 <label htmlFor="loginPassword" className="form-label">Password</label>
-                                                <input type="password" className="form-control" id="loginPassword" required placeholder="Enter Password" />
+                                                <input 
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                type="password" className="form-control" id="loginPassword" 
+                                                // required 
+                                                
+                                                placeholder="Enter Password" />
                                             </div>
-                                            <Link to="/">
+                                            {/* <Link to="/"> */}
                                             <div className="d-grid mt-4 mb-3">
                                                
-                                                <button className="btn btn-primary" type="submit">Sign Up</button></div>
-                                                </Link>
+                                                <button 
+                                                 onClick={(e) => handleSubmit(e)}
+                                                className="btn btn-primary" type="submit"> {isLoading ? <Spinner /> : "Sign Up"}</button></div>
+                                                {/* </Link> */}
                                         </form>
-                                        <p className="text-3 text-center text-muted">Already have an account? <Link  className="btn-link" to="/">Login</Link></p>
+                                        <p className="text-3 text-center text-muted">Already have an account? <Link  className={
+                                         isLoading ? "disabled-anything " : "btn-link"
+                                        } to="/">Login</Link></p>
                                     </div>
                                 </div>
                             </div>

@@ -3763,6 +3763,9 @@ select.form-control:not([size]):not([multiple]):not(.form-control-sm) {
   text-decoration: none;
 }
 
+.disabled-anything {
+  pointer-events: none;
+}
 .btn-link:hover {
   text-decoration: underline;
 }

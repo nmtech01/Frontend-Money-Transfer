@@ -7,15 +7,16 @@ import Dashboard from '../src/components/Dashboard/index'
 import Requestmoney from '../src/components/RequestMoney/index'
 import MyProfile from '../src/components/MyProfile/index'
 import ChangePassword from '../src/components/ChangePassword/index'
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 
   return (
     
       <div>
+          <ToastContainer autoClose={1000} />
         <Routes>
-
           <Route exact path="/" element={<Login />} />
           <Route exact path="/signup" element={<Register />} />
           <Route exact path="/dashboard" element={<Dashboard />} />
