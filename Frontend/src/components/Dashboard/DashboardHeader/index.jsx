@@ -28,6 +28,10 @@ const index = () => {
     const [userData, setuserData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const handleDropdownToggle = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
     const handleNotificationsHover = (isOpen) => {
         setIsNotificationsOpen(isOpen);
     };
@@ -66,6 +70,12 @@ const index = () => {
           toastId.current = toast.error(error);
         });
         }
+    const handleDropdownClose = () => {
+        setIsDropdownOpen(false);
+    };
+    const handleDropDownHover = (isOpen) => {
+        setIsDropdownOpen(isOpen);
+    };
     return (
 
         <>
@@ -86,8 +96,16 @@ const index = () => {
                             <nav className="primary-menu navbar navbar-expand-lg">
                                 <div id="header-nav" className="collapse navbar-collapse">
                                     <ul className="navbar-nav me-auto">
-                                        <li><a href="/dashboard">Dashboard</a></li>
-                                        <li><Link  className="dropdown-item" to="/request-money">Send/Request Money</Link></li>
+                                        <li className="dropdown">
+                                            <a className="dropdown-toggle" onClick={handleDropdownToggle}>
+                                                AG
+                                            </a>
+                                            <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`} style={{ left: '-50%', minWidth: '140px' }}>
+                                                <li className="dropdown-item" onClick={handleDropdownClose}><a className="dropdown-item dropdown-toggle" href="#">COLL</a></li>
+                                                <li className="dropdown-item" onClick={handleDropdownClose}><Link className="dropdown-item dropdown-toggle" to="/app-form">APP</Link></li>
+                                                <li className="dropdown-item" onClick={handleDropdownClose}><a className="dropdown-item dropdown-toggle" href="#">CONS</a></li>
+                                            </ul>
+                                        </li>
                                         <li><a href="">Reporting</a></li>
                                         <li><a href="">Settings</a></li>
                                         <li><a href="">Administrator</a></li>
@@ -146,6 +164,7 @@ const index = () => {
                                         className="dropdown-item"  ><i className="fas fa-sign-out-alt"></i> Sign Out</div></li>
                                     </ul>
 
+                                       
                                     </li>
 
                                 </ul>
@@ -159,6 +178,8 @@ const index = () => {
             <FullScreenLoader/>
             
             }
+
+
         </>
 
     );

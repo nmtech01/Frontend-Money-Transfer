@@ -10,12 +10,12 @@ const index = () => {
 
                 <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
                     <div className="profile-thumb mt-3 mb-4"> <img className="rounded-circle" src="/src/assets/images/profile-thumb.jpg" alt="" />
-                        <div className="profile-thumb-edit bg-primary text-white" data-bs-toggle="tooltip" title="Change Profile Picture"> <i className="fas fa-camera position-absolute"></i>
+                        {/* <div className="profile-thumb-edit bg-primary text-white" data-bs-toggle="tooltip" title="Change Profile Picture"> <i className="fas fa-camera position-absolute"></i>
                             <input type="file" className="custom-file-input" id="customFile" />
-                        </div>
+                        </div> */}
                     </div>
                     <p className="text-3 fw-500 mb-2">Hello, Smith Rhodes</p>
-                    <p className="mb-2"><a href="settings-profile.html" className="text-5 text-light" data-bs-toggle="tooltip" title="Edit Profile"><i className="fas fa-edit"></i></a></p>
+                    {/* <p className="mb-2"><a href="settings-profile.html" className="text-5 text-light" data-bs-toggle="tooltip" title="Edit Profile"><i className="fas fa-edit"></i></a></p> */}
                 </div>
                 <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
                     <div className="text-17 text-light my-3"><i className="fas fa-wallet"></i></div>

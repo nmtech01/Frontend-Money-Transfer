@@ -110,15 +110,16 @@ function index() {
                           </div>
                         </div>
                         <div className="col-sm text-end">
-                        <a
+                        {/* <a
                             className={
                               isLoading ? "disabled-anything " : "btn-link"
                             }
                             href="#"
                           >
                             Forgot Password ?
-                          </a>
+                          </a> */}
                           </div>
+                        <div className="col-sm text-end"><Link className="btn-link" to="/forgot-password" >Forgot Password ?</Link></div>
                       </div>
                       {/* <Link to="/dashboard"> */}
                       <div className="d-grid mb-3">
