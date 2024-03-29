@@ -126,13 +126,18 @@ export function updateUserProfileApi(data) {
       })
   );
 }
-export function changePassword(data) {
+export function changePasswordApi(data) {
 
   return new Promise((resolve, reject) =>
     axios
     .post(
       `${BASE_URL}${AUTH.changePassword}`,
-      data
+      data,
+      {
+        headers: {
+          Authorization:TOKEN,
+        },
+      }
       )
       .then(function (response) {
 
@@ -144,7 +149,25 @@ export function changePassword(data) {
       })
   );
 }
-export function forgotPassword(data) {
+export function resetPasswordApi(data) {
+
+  return new Promise((resolve, reject) =>
+    axios
+    .post(
+      `${BASE_URL}${AUTH.resetPassword}`,
+      data,
+      )
+      .then(function (response) {
+
+        resolve(response);
+      })
+      .catch(function (error) {
+        reject(error);
+        
+      })
+  );
+}
+export function forgotPasswordApi(data) {
   return new Promise((resolve, reject) =>
     axios
     .post(

@@ -1,13 +1,23 @@
-import { useState, } from 'react'
+import React,{ useState, } from 'react'
 import Header from "../Dashboard/DashboardHeader/index";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from "../Dashboard/DashboardFooter/index"
 import Aside from "../Dashboard/DashboardAside/index"
 import { Button, Modal } from 'antd';
+import { toast } from "react-toastify";
 
+import Spinner from "../../commonComponent/Spinner";
+import { changePasswordApi } from '../../services/authService';
 
 function index() {
-    const [count, setCount] = useState(0)
+    const navigate=useNavigate();
+    const toastId = React.useRef(null);
+
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [isLoading,setIsLoading]=useState(false)
+  
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
@@ -20,6 +30,57 @@ function index() {
         setIsModalOpen(false);
     };
 
+    const changePassword = (e) => {
+        e.preventDefault();
+     
+      if (currentPassword === "") {
+        if (!toast.isActive(toastId.current)) {
+          toastId.current = toast.error("Please enter current password");
+        }
+        return;
+      }
+      if (newPassword === "") {
+        if (!toast.isActive(toastId.current)) {
+          toastId.current = toast.error("Please enter New Password");
+        }
+        return;
+      }
+      if (confirmPassword === "") {
+        if (!toast.isActive(toastId.current)) {
+          toastId.current = toast.error("Please enter confirm password");
+        }
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        if (!toast.isActive(toastId.current)) {
+          toastId.current = toast.error("Password not matched");
+        }
+        return;
+      }
+      setIsLoading(true);
+      const param = {
+        "old_password":currentPassword,
+        "new_password1":newPassword,
+        "new_password2":confirmPassword
+    };
+       console.log("paramsss",param);
+       changePasswordApi(param)
+        .then((resp) => {
+            setIsLoading(false);
+            if(resp?.data?.status==200){
+                toastId.current = toast.success(resp?.data?.message);
+                handleCancel()
+                
+            }
+            else{
+                toastId.current = toast.error(resp?.data?.message);
+            }
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          toastId.current = toast.error(error);
+        });
+    };
     return (
         <>
             <div id="main-wrapper">
@@ -47,17 +108,31 @@ function index() {
                                                 <form id="changePassword" method="post">
                                                     <div class="mb-3">
                                                         <label for="existingPassword" class="form-label">Confirm Current Password</label>
-                                                        <input type="text" class="form-control" data-bv-field="existingpassword" id="existingPassword" required placeholder="Enter Current Password" />
+                                                        <input type="text" class="form-control" data-bv-field="existingpassword" id="existingPassword" 
+                                                         placeholder="Enter Current Password" 
+                                                         value={currentPassword}
+                                                         onChange={(e) => setCurrentPassword(e.target.value)}
+                                                         />
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="newPassword" class="form-label">New Password</label>
-                                                        <input type="text" class="form-control" data-bv-field="newpassword" id="newPassword" required placeholder="Enter New Password" />
+                                                        <input type="text" 
+                                                         value={newPassword}
+                                                         onChange={(e) => setNewPassword(e.target.value)}
+                                                        class="form-control" data-bv-field="newpassword" id="newPassword"  placeholder="Enter New Password" />
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                                                        <input type="text" class="form-control" data-bv-field="confirmgpassword" id="confirmPassword" required placeholder="Enter Confirm New Password" />
+                                                        <input 
+                                                         value={confirmPassword}
+                                                         onChange={(e) => setConfirmPassword(e.target.value)}
+                                                        type="text" class="form-control" data-bv-field="confirmgpassword" id="confirmPassword"  placeholder="Enter Confirm New Password" />
                                                     </div>
-                                                    <div class="d-grid mt-4"><button onClick={handleOk} class="btn btn-primary" type="submit">Update Password</button></div>
+                                                    <div class="d-grid mt-4"><button onClick={(e)=>changePassword(e)} class="btn btn-primary" type="submit">
+                                                        {isLoading?<Spinner/>:'Update Password'
+
+
+                                                    }</button></div>
                                                 </form>
                                             </div>
                                         </div>

@@ -1,10 +1,72 @@
-import { useState, } from 'react'
+import React,{ useEffect, useState, } from 'react'
 import Header from "../Header/Header";
-import { Link } from 'react-router-dom';
-
+import { Link ,useNavigate,useParams} from 'react-router-dom';
+import { toast } from "react-toastify";
+import Spinner from '../../commonComponent/Spinner';
+import { resetPasswordApi } from '../../services/authService';
 
 function index() {
-  const [count, setCount] = useState(0)
+  const navigate=useNavigate();
+ 
+    const toastId = React.useRef(null);
+
+    const [password, setPassword] = useState("");
+
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [linkId, setLinkId] = useState('');
+    const [isLoading,setIsLoading]=useState(false)
+    useEffect(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+      setLinkId(id)
+  }, []);
+  const resetPassword= (e) => {
+    e.preventDefault();
+ 
+  if (password === "") {
+    if (!toast.isActive(toastId.current)) {
+      toastId.current = toast.error("Please enter password");
+    }
+    return;
+  }
+  
+  if (confirmPassword === "") {
+    if (!toast.isActive(toastId.current)) {
+      toastId.current = toast.error("Please enter confirm password");
+    }
+    return;
+  }
+  if (password !== confirmPassword) {
+    if (!toast.isActive(toastId.current)) {
+      toastId.current = toast.error("Password not matche");
+    }
+    return;
+  }
+  setIsLoading(true);
+  const param = {
+    "password":password,
+    "confirm_password":confirmPassword,
+    "id":linkId
+};
+   console.log("paramsss",param);
+   resetPasswordApi(param)
+    .then((resp) => {
+        setIsLoading(false);
+        if(resp?.data?.status==200){
+            toastId.current = toast.success(resp?.data?.message);
+            navigate('/')
+            
+        }
+        else{
+            toastId.current = toast.error(resp?.data?.message);
+        }
+    })
+    .catch((error) => {
+      setIsLoading(false);
+      toastId.current = toast.error(error);
+    });
+};
 
   return (
     <>
@@ -40,15 +102,24 @@ function index() {
                     <form id="loginForm" method="post">
                       <div className="mb-3">
                         <label htmlFor="emailAddress" className="form-label">Password</label>
-                        <input type="email" className="form-control" id="emailAddress" required placeholder="Enter Your Password" />
+                        <input 
+                        value={password}
+                        onChange={(e)=>setPassword(e?.target?.value)}
+                        
+                        type="email" className="form-control" id="emailAddress"  placeholder="Enter Your Password" />
                       </div>
                       <div className="mb-3">
                         <label htmlFor="emailAddress" className="form-label">Confirm Password</label>
-                        <input type="email" className="form-control" id="emailAddress" required placeholder="Enter Confirm Password" />
+                        <input 
+                         value={confirmPassword}
+                         onChange={(e)=>setConfirmPassword(e?.target?.value)}
+                        type="email" className="form-control" id="emailAddress"  placeholder="Enter Confirm Password" />
                       </div>
                       <Link to="/">
                       <div className="d-grid mb-3">
-                            <button  className="btn btn-primary" type="submit">Submit</button>
+                            <button 
+                            onClick={(e)=>resetPassword(e)}
+                            className="btn btn-primary" type="submit">{isLoading?<Spinner/>:"Submit"}</button>
                         </div>
                         </Link>
                     </form>

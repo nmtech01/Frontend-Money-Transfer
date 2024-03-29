@@ -8,6 +8,7 @@ import { getUserProfileApi, updateUserProfileApi } from '../../services/authServ
 import { capitalizeFirstLetter } from '../../utilities/globalMethods';
 import { toast } from "react-toastify";
 import Spinner from "../../commonComponent/Spinner";
+import { BASE_URL } from '../../constants/APIinventory';
 
 
 function index() {
@@ -21,11 +22,13 @@ function index() {
     const [lastName, setlastName] = useState('');
     const [email, setEmail] = useState('');
     const [profilePic, setProfilePic] = useState('');
+    const [isProfileEdit, setIsEditProfile] = useState(false);
 
     const [address, setAddress] = useState('');
 
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
+    
 
 
     const showModal = () => {
@@ -56,6 +59,7 @@ function index() {
         getUserProfileApi()
         .then((resp) => {
             setIsLoading(false);
+            setIsEditProfile(false)
             if(resp?.data?.status==200){
             const user=resp?.data?.data
             setFisrtName(user?.first_name)
@@ -76,31 +80,26 @@ function index() {
     }
     const uploadImage = (e) => {
         e.preventDefault();
-        let imageFile = e.target.files;
         const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setProfilePic(reader.result);
-        };
-        if (file) {
-          reader.readAsDataURL(file);
-        }
+        setProfilePic(file);
+        setIsEditProfile(true)
       };
 
         const updateUserProfile=(e)=>{
             e.preventDefault();
             setIsLoading(true);
-            const formData = new FormData();
+        const formData = new FormData();
         formData.append('first_name',firstName)
         formData.append('last_name',firstName)
         formData.append('email',email)
         formData.append('address',address)
-        formData.append('profile_pic','https://dummyimage.com/300')
+        formData.append('profile_pic',URL.createObjectURL(profilePic))
         formData.append('city',city)
         formData.append('state',state)
         console.log("formData",formData);
             updateUserProfileApi(formData)
             .then((resp) => {
+                setIsEditProfile(false)
                 setIsLoading(false);
                 if(resp?.data?.status==200){
                     getUserProfile()
@@ -198,10 +197,15 @@ function index() {
                                                                                     <div className="modal-body p-4 d-flex justify-content-center align-items-center">
                                             <div className="profile-thumb mt-3 mb-4 text-center">
                                                 <div className="d-inline-block position-relative">
-                                                    <img 
-                                                    height={100}
-                                                    width={100}
-                                                    className="rounded-circle" src={profilePic??"/src/assets/images/profile_placeholder.png"} alt="" />
+                                                <img 
+                                                height={100}
+                                                width={100}
+                                                className="rounded-circle" 
+                                                src={isProfileEdit?URL.createObjectURL(profilePic):(profilePic?? "/src/assets/images/profile_placeholder.png")} 
+                                                alt="" 
+                                            />
+
+
                                                     <div className="profile-thumb-edit bg-primary text-white" data-bs-toggle="tooltip" title="Change Profile Picture">
                                                         <i className="fas fa-camera position-absolute"></i>
                                                         <input 

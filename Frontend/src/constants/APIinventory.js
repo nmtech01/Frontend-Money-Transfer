@@ -7,5 +7,6 @@ export const AUTH = {
   updateUserProfile: "/api/edit-profile/",
   logout:'/api/logout/',
   changePassword:'/api/change-password/',
-  forgotPassword:''
+  forgotPassword:'/api/forgot-password/',
+  resetPassword:'/api/reset-password/'
 };

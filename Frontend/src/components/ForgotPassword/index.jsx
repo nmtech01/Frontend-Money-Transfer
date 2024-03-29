@@ -1,10 +1,51 @@
-import { useState, } from 'react'
-import Header from "../Header/Header";
-import { Link } from 'react-router-dom';
+import React,{ useState, } from 'react'
+
+import { Link, useNavigate } from 'react-router-dom';
+import { emailReg } from '../../utilities/validators';
+import { forgotPasswordApi } from '../../services/authService';
+import { toast } from "react-toastify";
+import Spinner from "../../commonComponent/Spinner";
 
 
 function index() {
-  const [count, setCount] = useState(0)
+  const navigate=useNavigate();
+  const toastId = React.useRef(null);
+  const [email,setEmail]=useState('')
+  const [isLoading, setIsLoading] = useState(false);
+
+  const forgotPassord = (e) => {
+    e.preventDefault();
+ 
+    var pattern = new RegExp(emailReg);
+    var resultemail = pattern.test(email);
+    if (resultemail === false) {
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.error("Please enter valid email");
+      }
+      return;
+    }
+  
+  setIsLoading(true);
+  const param = {
+    "email":email,
+};
+   console.log("paramsss",param);
+   forgotPasswordApi(param)
+    .then((resp) => {
+        setIsLoading(false);
+        if(resp?.data?.status==200){
+            toastId.current = toast.success(resp?.data?.message);
+            navigate('/') 
+        }
+        else{
+            toastId.current = toast.error(resp?.data?.message);
+        }
+    })
+    .catch((error) => {
+      setIsLoading(false);
+      toastId.current = toast.error(error);
+    });
+};
 
 
   return (
@@ -41,13 +82,20 @@ function index() {
                     <form id="loginForm" method="post">
                       <div className="mb-3">
                         <label htmlFor="emailAddress" className="form-label">Email Address</label>
-                        <input type="email" className="form-control" id="emailAddress" required placeholder="Enter Your Email" />
+                        <input
+                       value={email}
+                        onChange={(e)=>setEmail(e?.target?.value)}
+                        type="email" className="form-control" id="emailAddress"  placeholder="Enter Your Email" />
                       </div>
                       
                       
                       <Link to="/">
                       <div className="d-grid mb-3">
-                            <button  className="btn btn-primary" type="submit">Submit</button>
+                            <button  
+                            onClick={(e)=>forgotPassord(e) }
+                            className="btn btn-primary" type="submit">{
+                              isLoading?<Spinner/>:'Submit'
+                            }</button>
                         </div>
                         </Link>
                     </form>
