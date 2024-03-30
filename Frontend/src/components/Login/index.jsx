@@ -1,15 +1,17 @@
-import React,{ useState, } from 'react'
+import React, { useState, } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { emailReg } from "../../utilities/validators";
 import Spinner from "../../commonComponent/Spinner";
 import { login, loginApi } from "../../services/authService";
+
 function index() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const toastId = React.useRef(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,13 +37,13 @@ function index() {
     loginApi(param)
       .then((resp) => {
         setIsLoading(false);
-        if(resp?.data?.status==200){
+        if (resp?.data?.status == 200) {
           toastId.current = toast.success(resp?.data?.message);
-          navigate('/Dashboard')  
-      }
-      else{
+          navigate('/Dashboard')
+        }
+        else {
           toastId.current = toast.error(resp?.data?.message);
-      }
+        }
       })
       .catch((error) => {
         setIsLoading(false);
@@ -84,23 +86,35 @@ function index() {
                     <form id="loginForm" method="post">
                       <div className="mb-3">
                         <label htmlFor="emailAddress" className="form-label">Email Address</label>
-                        <input 
-                         value={email}
-                         onChange={(e) => setEmail(e.target.value)}
-                        type="email" className="form-control" id="emailAddress"
-                        //  required 
-                         placeholder="Enter Your Email" />
+                        <input
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          type="email" className="form-control" id="emailAddress"
+                          //  required 
+                          placeholder="Enter Your Email" />
                       </div>
                       <div className="mb-3">
                         <label htmlFor="loginPassword" className="form-label">Password</label>
-                        <input 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        type="password" className="form-control" id="loginPassword" 
-                        // required              
-                        placeholder="Enter Password" />
+                        <div className="input-group">
+                          <input
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            type={showPassword ? "text" : "password"}
+                            className="form-control"
+                            id="loginPassword"
+                            placeholder="Enter Password"
+                            aria-describedby="passwordToggle"
+                          />
+                          <span
+                            className="input-group-text bg-white"
+                            id="passwordToggle"
+                            onClick={() => setShowPassword(!showPassword)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            {showPassword ? <i className="fa-solid fa-eye" ></i> : <i className="fa-solid fa-eye-slash" ></i>}
 
-
+                          </span>
+                        </div>
                       </div>
                       <div className="row mb-3">
                         <div className="col-sm">
@@ -110,7 +124,7 @@ function index() {
                           </div>
                         </div>
                         <div className="col-sm text-end">
-                        {/* <a
+                          {/* <a
                             className={
                               isLoading ? "disabled-anything " : "btn-link"
                             }
@@ -118,23 +132,23 @@ function index() {
                           >
                             Forgot Password ?
                           </a> */}
-                          </div>
+                        </div>
                         <div className="col-sm text-end"><Link className="btn-link" to="/forgot-password" >Forgot Password ?</Link></div>
                       </div>
                       {/* <Link to="/dashboard"> */}
                       <div className="d-grid mb-3">
-                            <button 
-                             onClick={(e) => handleSubmit(e)}
-                            className="btn btn-primary" type="submit"> {isLoading ? <Spinner /> : "Login"}</button>
-                        </div>
-                        {/* </Link> */}
+                        <button
+                          onClick={(e) => handleSubmit(e)}
+                          className="btn btn-primary" type="submit"> {isLoading ? <Spinner /> : "Login"}</button>
+                      </div>
+                      {/* </Link> */}
                     </form>
-                    <p className="text-3 text-center text-muted">Don't have an account? <Link 
-                    
-                    className={
-                      isLoading ? "disabled-anything" : "btn-link"
-                    } to="/signup">Sign Up</Link></p>
-                    
+                    <p className="text-3 text-center text-muted">Don't have an account? <Link
+
+                      className={
+                        isLoading ? "disabled-anything" : "btn-link"
+                      } to="/signup">Sign Up</Link></p>
+
                   </div>
                 </div>
               </div>
