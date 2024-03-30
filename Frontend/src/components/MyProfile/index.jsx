@@ -45,13 +45,15 @@ function index() {
         const authdata = localStorage.getItem('user_data')
         if (authdata) {
             const user = JSON.parse(authdata)
+        
+
             setFisrtName(user?.first_name)
             setlastName(user?.last_name)
             setEmail(user?.email)
             setProfilePic(user?.profile_pic)
             setAddress(user?.address)
-            setCity(userData?.city)
-            setState(userData?.state)
+            setCity(user?.city)
+            setState(user?.state)
             setuserData(user)
         }
     }, [])
@@ -62,13 +64,14 @@ function index() {
                 setIsEditProfile(false)
                 if (resp?.data?.status == 200) {
                     const user = resp?.data?.data
+                   
                     setFisrtName(user?.first_name)
                     setlastName(user?.last_name)
                     setEmail(user?.email)
                     setProfilePic(user?.profile_pic)
                     setAddress(user?.address)
-                    setCity(userData?.city)
-                    setState(userData?.state)
+                    setCity(user?.city)
+                    setState(user?.state)
                     setuserData(user)
                 }
 
@@ -275,6 +278,7 @@ function index() {
                                                         <div className="col-12 col-sm-6">
                                                             <label htmlFor="city" className="form-label">City</label>
                                                             <input
+                                                            
                                                                 onChange={(e) => setCity(e?.target?.value)}
                                                                 id="city" value={city} type="text" className="form-control"
                                                                 placeholder="City" />

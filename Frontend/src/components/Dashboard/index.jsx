@@ -1,16 +1,35 @@
-import { useEffect, useState, } from 'react'
+import React,{ useEffect, useState } from "react";
 import Header from "../Dashboard/DashboardHeader/index";
-import Footer from "../Dashboard/DashboardFooter/index"
-import { Link } from 'react-router-dom';
-import Aside from "../Dashboard/DashboardAside/index"
-import { getUserProfileApi } from '../../services/authService';
-
-
+import Footer from "../Dashboard/DashboardFooter/index";
+import { Link, useNavigate } from "react-router-dom";
+import Aside from "../Dashboard/DashboardAside/index";
+import { getUserProfileApi } from "../../services/authService";
+import { getTransactionListAPI } from "../../services/transactionService";
+import { toast } from "react-toastify";
+import moment from "moment";
+import NotFound from "../../commonComponent/NotFound";
 function index() {
-  const [count, setCount] = useState(0)
+  const navigate=useNavigate();
+  const toastId = React.useRef(null);
+  const [count, setCount] = useState(0);
+  const [transactionList, setTransactionList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    getUserProfileApi()
-  }, [])
+    getUserProfileApi();
+    getTransactionListAPI()
+      .then((resp) => {
+        setIsLoading(false);
+        if (resp?.data?.status == 200) {
+          setTransactionList(resp?.data?.data);
+        } else {
+          toastId.current = toast.error(resp?.data?.message);
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        toastId.current = toast.error(error);
+      });
+  }, []);
 
   return (
     <>
@@ -19,7 +38,6 @@ function index() {
         <div id="content" className="py-4">
           <div className="container">
             <div className="row">
-
               <Aside />
               <div className="col-lg-9">
                 <nav style={{ '--bs-breadcrumb-divider': 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'8\' height=\'8\'%3E%3Cpath d=\'M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z\' fill=\'currentColor\'/%3E%3C/svg%3E")' }} aria-label="breadcrumb">
@@ -35,117 +53,235 @@ function index() {
                       <div className="row g-3 mb-3">
                         <div className="col-sm-6 col-md-5">
                           <div className="position-relative">
-                            <input id="dateRange" type="text" className="form-control" placeholder="Date Range" />
-                            <span className="icon-inside"><i className="fas fa-calendar-alt"></i></span>
+                            <input
+                              id="dateRange"
+                              type="text"
+                              className="form-control"
+                              placeholder="Date Range"
+                            />
+                            <span className="icon-inside">
+                              <i className="fas fa-calendar-alt"></i>
+                            </span>
                           </div>
                         </div>
-                        <div className="col-auto d-flex align-items-center me-auto form-group" data-bs-toggle="collapse"> <a className="btn-link" data-bs-toggle="collapse" href="#allFilters" aria-expanded="false" aria-controls="allFilters">All Filters<i className="fas fa-sliders-h text-3 ms-1"></i></a> </div>
+                        {/* <div
+                          className="col-auto d-flex align-items-center me-auto form-group"
+                          data-bs-toggle="collapse"
+                        >
+                          {" "}
+                          <a
+                            className="btn-link"
+                            data-bs-toggle="collapse"
+                            href="#allFilters"
+                            aria-expanded="false"
+                            aria-controls="allFilters"
+                          >
+                            All Filters
+                            <i className="fas fa-sliders-h text-3 ms-1"></i>
+                          </a>{" "}
+                        </div> */}
+
+
+
 
                         <div className="col-auto d-flex align-items-center ms-auto">
-                          <div className="dropdown"> <a className="text-muted btn-link" href="#" role="button" id="statements" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-file-download text-3 me-1"></i>Statements</a>
-                            <div className="dropdown-menu dropdown-menu-end" aria-labelledby="statements"> <a className="dropdown-item" href="#">CSV</a> <a className="dropdown-item" href="#">PDF</a> </div>
+                          <div className="dropdown">
+                            {" "}
+                            <a
+                              className="text-muted btn-link"
+                              href="#"
+                              role="button"
+                              id="statements"
+                              data-bs-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            >
+                              <i className="fas fa-file-download text-3 me-1"></i>
+                              Statements
+                            </a>
+                            <div
+                              className="dropdown-menu dropdown-menu-end"
+                              aria-labelledby="statements"
+                            >
+                              {" "}
+                              <a className="dropdown-item" href="#">
+                                CSV
+                              </a>{" "}
+                              <a className="dropdown-item" href="#">
+                                PDF
+                              </a>{" "}
+                            </div>
                           </div>
                         </div>
 
-                        <div className="col-12 collapse" id="allFilters">
+                        {/* <div className="col-12 collapse" id="allFilters">
                           <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" id="allTransactions" name="allFilters" />
-                            <label className="form-check-label" htmlFor="allTransactions">All Transactions</label>
+                            <input
+                              className="form-check-input"
+                              type="radio"
+                              id="allTransactions"
+                              name="allFilters"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="allTransactions"
+                            >
+                              All Transactions
+                            </label>
                           </div>
                           <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" id="paymentsSend" name="allFilters" />
-                            <label className="form-check-label" htmlFor="paymentsSend">Payments Send</label>
+                            <input
+                              className="form-check-input"
+                              type="radio"
+                              id="paymentsSend"
+                              name="allFilters"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="paymentsSend"
+                            >
+                              Payments Send
+                            </label>
                           </div>
                           <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" id="paymentsReceived" name="allFilters" />
-                            <label className="form-check-label" htmlFor="paymentsReceived">Payments Received</label>
+                            <input
+                              className="form-check-input"
+                              type="radio"
+                              id="paymentsReceived"
+                              name="allFilters"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="paymentsReceived"
+                            >
+                              Payments Received
+                            </label>
                           </div>
                           <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" id="refunds" name="allFilters" />
-                            <label className="form-check-label" htmlFor="refunds">Refunds</label>
+                            <input
+                              className="form-check-input"
+                              type="radio"
+                              id="refunds"
+                              name="allFilters"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="refunds"
+                            >
+                              Refunds
+                            </label>
                           </div>
                           <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" id="withdrawal" name="allFilters" />
-                            <label className="form-check-label" htmlFor="withdrawal">Withdrawal</label>
+                            <input
+                              className="form-check-input"
+                              type="radio"
+                              id="withdrawal"
+                              name="allFilters"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="withdrawal"
+                            >
+                              Withdrawal
+                            </label>
                           </div>
                           <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" id="deposit" name="allFilters" />
-                            <label className="form-check-label" htmlFor="deposit">Deposit</label>
+                            <input
+                              className="form-check-input"
+                              type="radio"
+                              id="deposit"
+                              name="allFilters"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="deposit"
+                            >
+                              Deposit
+                            </label>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </form>
                   </div>
                 </div>
                 <div className="bg-white shadow-sm rounded py-4 mb-4">
-                  <h3 className="text-5 fw-400 d-flex align-items-center px-4 mb-4">All Transactions</h3>
+                  <h3 className="text-5 fw-400 d-flex align-items-center px-4 mb-4">
+                    All Transactions
+                  </h3>
 
                   <div className="transaction-title py-2 px-4">
                     <div className="row">
-                      <div className="col-2 col-sm-1 text-center"><span className="">Date</span></div>
+                      <div className="col-2 col-sm-1 text-center">
+                        <span className="">Date</span>
+                      </div>
                       <div className="col col-sm-7">Description</div>
-                      <div className="col-auto col-sm-2 d-none d-sm-block text-center">Status</div>
+                      <div className="col-auto col-sm-2 d-none d-sm-block text-center">
+                        Status
+                      </div>
                       <div className="col-3 col-sm-2 text-end">Amount</div>
                     </div>
                   </div>
-                  <div className="transaction-list">
-                    <div className="transaction-item px-4 py-3" data-bs-toggle="modal" data-bs-target="#transaction-detail">
-                      <div className="row align-items-center flex-row">
-                        <div className="col-2 col-sm-1 text-center"> <span className="d-block text-4 fw-300">16</span> <span className="d-block text-1 fw-300 text-uppercase">APR</span> </div>
-                        <div className="col col-sm-7"> <span className="d-block text-4">HDFC Bank</span> <span className="text-muted">Withdraw to Bank account</span> </div>
-                        <div className="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span className="text-warning" data-bs-toggle="tooltip" title="In Progress"><i className="fas fa-ellipsis-h"></i></span> </div>
-                        <div className="col-3 col-sm-2 text-end text-4"> <span className="text-nowrap">- $562</span> <span className="text-2 text-uppercase">(USD)</span> </div>
-                      </div>
-                    </div>
-                    <div className="transaction-item px-4 py-3" data-bs-toggle="modal" data-bs-target="#transaction-detail">
-                      <div className="row align-items-center flex-row">
-                        <div className="col-2 col-sm-1 text-center"> <span className="d-block text-4 fw-300">15</span> <span className="d-block text-1 fw-300 text-uppercase">APR</span> </div>
-                        <div className="col col-sm-7"> <span className="d-block text-4">Envato Pty Ltd</span> <span className="text-muted">Payment Received</span> </div>
-                        <div className="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span className="text-success" data-bs-toggle="tooltip" title="Completed"><i className="fas fa-check-circle"></i></span> </div>
-                        <div className="col-3 col-sm-2 text-end text-4"> <span className="text-nowrap">+ $562</span> <span className="text-2 text-uppercase">(USD)</span> </div>
-                      </div>
-                    </div>
-                    <div className="transaction-item px-4 py-3" data-bs-toggle="modal" data-bs-target="#transaction-detail">
-                      <div className="row align-items-center flex-row">
-                        <div className="col-2 col-sm-1 text-center"> <span className="d-block text-4 fw-300">04</span> <span className="d-block text-1 fw-300 text-uppercase">APR</span> </div>
-                        <div className="col col-sm-7"> <span className="d-block text-4">HDFC Bank</span> <span className="text-muted">Withdraw to Bank account</span> </div>
-                        <div className="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span className="text-success" data-bs-toggle="tooltip" title="Completed"><i className="fas fa-check-circle"></i></span> </div>
-                        <div className="col-3 col-sm-2 text-end text-4"> <span className="text-nowrap">- $106</span> <span className="text-2 text-uppercase">(USD)</span> </div>
-                      </div>
-                    </div>
-                    <div className="transaction-item px-4 py-3" data-bs-toggle="modal" data-bs-target="#transaction-detail">
-                      <div className="row align-items-center flex-row">
-                        <div className="col-2 col-sm-1 text-center"> <span className="d-block text-4 fw-300">28</span> <span className="d-block text-1 fw-300 text-uppercase">MAR</span> </div>
-                        <div className="col col-sm-7"> <span className="d-block text-4">Patrick Cary</span> <span className="text-muted">Refund</span> </div>
-                        <div className="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span className="text-success" data-bs-toggle="tooltip" title="Completed"><i className="fas fa-check-circle"></i></span> </div>
-                        <div className="col-3 col-sm-2 text-end text-4"> <span className="text-nowrap">+ $60</span> <span className="text-2 text-uppercase">(USD)</span> </div>
-                      </div>
-                    </div>
-                    <div className="transaction-item px-4 py-3" data-bs-toggle="modal" data-bs-target="#transaction-detail">
-                      <div className="row align-items-center flex-row">
-                        <div className="col-2 col-sm-1 text-center"> <span className="d-block text-4 fw-300">28</span> <span className="d-block text-1 fw-300 text-uppercase">MAR</span> </div>
-                        <div className="col col-sm-7"> <span className="d-block text-4">Patrick Cary</span> <span className="text-muted">Payment Sent</span> </div>
-                        <div className="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span className="text-danger" data-bs-toggle="tooltip" title="Cancelled"><i className="fas fa-times-circle"></i></span> </div>
-                        <div className="col-3 col-sm-2 text-end text-4"> <span className="text-nowrap">- $60</span> <span className="text-2 text-uppercase">(USD)</span> </div>
-                      </div>
-                    </div>
-                    <div className="transaction-item px-4 py-3" data-bs-toggle="modal" data-bs-target="#transaction-detail">
-                      <div className="row align-items-center flex-row">
-                        <div className="col-2 col-sm-1 text-center"> <span className="d-block text-4 fw-300">16</span> <span className="d-block text-1 fw-300 text-uppercase">FEB</span> </div>
-                        <div className="col col-sm-7"> <span className="d-block text-4">HDFC Bank</span> <span className="text-muted">Withdraw to Bank account</span> </div>
-                        <div className="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span className="text-success" data-bs-toggle="tooltip" title="Completed"><i className="fas fa-check-circle"></i></span> </div>
-                        <div className="col-3 col-sm-2 text-end text-4"> <span className="text-nowrap">- $1498</span> <span className="text-2 text-uppercase">(USD)</span> </div>
-                      </div>
-                    </div>
-                    <div className="transaction-item px-4 py-3" data-bs-toggle="modal" data-bs-target="#transaction-detail">
-                      <div className="row align-items-center flex-row">
-                        <div className="col-2 col-sm-1 text-center"> <span className="d-block text-4 fw-300">15</span> <span className="d-block text-1 fw-300 text-uppercase">FEB</span> </div>
-                        <div className="col col-sm-7"> <span className="d-block text-4">Envato Pty Ltd</span> <span className="text-muted">Payment Received</span> </div>
-                        <div className="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span className="text-success" data-bs-toggle="tooltip" title="Completed"><i className="fas fa-check-circle"></i></span> </div>
-                        <div className="col-3 col-sm-2 text-end text-4"> <span className="text-nowrap">+ $1498</span> <span className="text-2 text-uppercase">(USD)</span> </div>
-                      </div>
-                    </div>
-                  </div>
+                  {transactionList.length > 0
+                    ? transactionList.map((transaction, index) => (
+                        <div key={index} className="transaction-list">
+                          {" "}
+                          {/* Added key prop */}
+                          <div
+                            className="transaction-item px-4 py-3"
+                            data-bs-toggle="modal"
+                            data-bs-target="#transaction-detail"
+                          >
+                            <div className="row align-items-center flex-row">
+                              <div className="col-2 col-sm-1 text-center">
+                                {" "}
+                                <span className="d-block text-4 fw-300">
+                                  {moment(transaction?.created_at).format('DD')}
+                                </span>{" "}
+                                <span className="d-block text-1 fw-300 text-uppercase">
+                               { moment(transaction?.created_at).format('MMMM')}
+
+                                </span>{" "}
+                              </div>
+                              <div className="col col-sm-7">
+                                {" "}
+                                <span className="d-block text-4">
+                                  HDFC Bank
+                                </span>{" "}
+                                <span className="text-muted">
+                                  Withdraw to Bank account
+                                </span>{" "}
+                              </div>
+                              <div className="col-auto col-sm-2 d-none d-sm-block text-center text-3">
+                              <span className="text-nowrap">
+                              {transaction?.type_id==0?'Requested':'Collected'}
+                                </span>
+                                
+                                
+                                {/* <span
+                                  className="text-warning"
+                                  data-bs-toggle="tooltip"
+                                  title="In Progress"
+                                >
+                                  <i className="fas fa-ellipsis-h"></i>
+                                </span>{" "} */}
+                              </div>
+                              <div className="col-3 col-sm-2 text-end text-4">
+                                {" "}
+                                <span className="text-nowrap">
+                                  ${transaction?.amount}
+                                </span>{" "}
+                                <span className="text-2 text-uppercase">
+                                  (USD)
+                                </span>{" "}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    : 
+                    <NotFound/>
+                    }
+
                   <div id="transaction-detail" className="modal fade" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered transaction-details" role="document">
                       <div className="modal-content">
@@ -215,7 +351,7 @@ function index() {
         <Footer />
       </div>
     </>
-  )
+  );
 }
 
-export default index
+export default index;
