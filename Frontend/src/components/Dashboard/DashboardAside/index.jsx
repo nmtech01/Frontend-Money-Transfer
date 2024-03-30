@@ -1,20 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 const index = () => {
-
+    const [firstName, setFisrtName] = useState('');
+    const [lastName, setlastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [profilePic, setProfilePic] = useState('');
+    const [userData, setuserData] = useState(null);
+    useEffect(()=>{
+       
+        const authdata=localStorage.getItem('user_data')
+        if(authdata){
+            const user=JSON.parse(authdata)
+            setFisrtName(user?.first_name)
+            setlastName(user?.last_name)
+            setEmail(user?.email)
+            setProfilePic(user?.profile_pic)
+            setuserData(user)
+        }
+    },[])
     return (
 
         <>
             <aside className="col-lg-3">
 
                 <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
-                    <div className="profile-thumb mt-3 mb-4"> <img className="rounded-circle" src="/src/assets/images/profile-thumb.jpg" alt="" />
+                    <div className="profile-thumb mt-3 mb-4"> 
+                    
+                    <img 
+                    height={100}
+                    width={100}
+                    className="rounded-circle" src={profilePic??"/src/assets/images/profile-thumb.jpg"} alt="" />
                         {/* <div className="profile-thumb-edit bg-primary text-white" data-bs-toggle="tooltip" title="Change Profile Picture"> <i className="fas fa-camera position-absolute"></i>
                             <input type="file" className="custom-file-input" id="customFile" />
                         </div> */}
                     </div>
-                    <p className="text-3 fw-500 mb-2">Hello, Smith Rhodes</p>
+                    <p className="text-3 fw-500 mb-2">Hello, {userData?.first_name} {userData?.last_name}</p>
                     {/* <p className="mb-2"><a href="settings-profile.html" className="text-5 text-light" data-bs-toggle="tooltip" title="Edit Profile"><i className="fas fa-edit"></i></a></p> */}
                 </div>
                 <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
