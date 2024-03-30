@@ -13,5 +13,6 @@ export const AUTH = {
 
 export const TRANSACTIONS={
    requestMoney:'/api/money-request/',
-   transactionList:'/api/money-request-list/'
+   transactionList:'/api/money-request-list/',
+   withdrawMoney:'/api/withdraw-money-request/'
 }

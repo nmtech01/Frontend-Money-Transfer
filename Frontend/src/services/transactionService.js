@@ -52,3 +52,24 @@ export function getTransactionListAPI(data) {
   );
 }
 
+export function withdrawMoneyApi(data) {
+  return new Promise((resolve, reject) =>
+    axios
+    .post(
+      `${BASE_URL}${TRANSACTIONS.withdrawMoney}`,
+      data,
+      {
+        headers: {
+          Authorization:TOKEN,
+        },
+      }
+      )
+      .then(function (response) {
+        resolve(response);
+      })
+      .catch(function (error) {
+        reject(error);
+        
+      })
+  );
+}

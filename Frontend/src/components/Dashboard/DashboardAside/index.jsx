@@ -8,7 +8,7 @@ const index = () => {
     const [profilePic, setProfilePic] = useState('');
     const [userData, setuserData] = useState(null);
     useEffect(() => {
-
+        
         const authdata = localStorage.getItem('user_data')
         if (authdata) {
             const user = JSON.parse(authdata)
@@ -40,10 +40,10 @@ const index = () => {
                 </div>
                 <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
                     <div className="text-17 text-light my-3"><i className="fas fa-wallet"></i></div>
-                    <h3 className="text-9 fw-400">$2956.00</h3>
+                    <h3 className="text-9 fw-400">${userData?.total_requested}</h3>
                     <p className="mb-2 text-muted opacity-8">Available Balance</p>
-                    <hr className="mx-n3"></hr>
-                    <div className="d-flex"><a href="withdraw-money.html" className="btn-link me-auto">Withdraw</a> <a href="deposit-money.html" className="btn-link ms-auto">Deposit</a></div>
+                    {/* <hr className="mx-n3"></hr> */}
+                    {/* <div className="d-flex"><a href="withdraw-money.html" className="btn-link me-auto">Withdraw</a> <a href="deposit-money.html" className="btn-link ms-auto">Deposit</a></div> */}
                 </div>
                 <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
                     <div className="text-17 text-light my-3"><i className="fas fa-comments"></i></div>

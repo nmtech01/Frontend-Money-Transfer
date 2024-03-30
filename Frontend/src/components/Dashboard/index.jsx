@@ -252,14 +252,18 @@ function index() {
                                 </span>{" "}
                               </div>
                               <div className="col-auto col-sm-2 d-none d-sm-block text-center text-3">
-                                {" "}
-                                <span
+                              <span className="text-nowrap">
+                              {transaction?.type_id==0?'Requested':'Collected'}
+                                </span>
+                                
+                                
+                                {/* <span
                                   className="text-warning"
                                   data-bs-toggle="tooltip"
                                   title="In Progress"
                                 >
                                   <i className="fas fa-ellipsis-h"></i>
-                                </span>{" "}
+                                </span>{" "} */}
                               </div>
                               <div className="col-3 col-sm-2 text-end text-4">
                                 {" "}

@@ -9,18 +9,12 @@ import Spinner from "../../commonComponent/Spinner";
 import { requestMoneyApi } from "../../services/transactionService";
 import FullScreenLoader from "../../commonComponent/FullScreenLoader";
 import ConfirmationModal from "../../commonComponent/ConfirmationModal";
+import { digits } from "../../utilities/validators";
 
 function index() {
   const navigate = useNavigate();
   const toastId = React.useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
   const [visible, setVisible] = useState(false);
   const [amount, setAmount] = useState("");
@@ -41,6 +35,12 @@ function index() {
       }
       return;
     }
+    if (isNaN(amount)) {
+        if (!toast.isActive(toastId.current)) {
+          toastId.current = toast.error("Amount must be a valid number");
+        }
+        return;
+      }
     if (!isAmountValid()) {
       if (!toast.isActive(toastId.current)) {
         toastId.current = toast.error(
@@ -138,9 +138,9 @@ function index() {
               <Aside />
               <div className="col-lg-9">
                 <div className="bg-white shadow-sm rounded p-4 mb-4">
-                  {/* <h3 className="text-5 fw-400 d-flex align-items-center mb-4">
-                    Personal Details
-                    <a
+                  <h3 className="text-5 fw-400 d-flex align-items-center mb-4">
+                    Request Amount
+                    {/* <a
                       href="#edit-personal-details"
                       data-bs-toggle="modal"
                       className="ms-auto text-2 text-uppercase btn-link"
@@ -149,8 +149,8 @@ function index() {
                         <i className="fas fa-edit"></i>
                       </span>
                       Edit
-                    </a>
-                  </h3> */}
+                    </a> */}
+                  </h3>
                   <hr className="mx-n4 mb-4"></hr>
                   <div className="col-lg-11 mx-auto">
                     <div className="row widget-steps">
@@ -188,7 +188,13 @@ function index() {
                             <input
                               inputMode="numeric"
                               value={amount}
-                              onChange={(e) => setAmount(e?.target?.value)}
+                              onChange={(e) => {
+                                const input = e.target.value;
+                                const regex =digits;
+                                if (regex.test(input) || input === "") {
+                                  setAmount(input);
+                                }
+                              }}
                               //   type="number"
                               className="form-control"
                               id="amount"
@@ -241,9 +247,14 @@ function index() {
                                       <input
                                         value={billets200}
                                         inputMode="numeric"
-                                        onChange={(e) =>
-                                          setBillets200(e.target.value)
-                                        }
+                                      
+                                        onChange={(e) => {
+                                            const input = e.target.value;
+                                            const regex =digits;
+                                            if (regex.test(input) || input === "") {
+                                                setBillets200(input);
+                                            }
+                                          }}
                                         className="form-control"
                                         placeholder="0"
                                       />
@@ -264,9 +275,14 @@ function index() {
                                       <input
                                         value={billets100}
                                         inputMode="numeric"
-                                        onChange={(e) =>
-                                          setBillets100(e.target.value)
-                                        }
+                                       
+                                        onChange={(e) => {
+                                            const input = e.target.value;
+                                            const regex =digits;
+                                            if (regex.test(input) || input === "") {
+                                                setBillets100(input);
+                                            }
+                                          }}
                                         className="form-control"
                                         placeholder="0"
                                       />
@@ -287,9 +303,14 @@ function index() {
                                       <input
                                         inputMode="numeric"
                                         value={billets50}
-                                        onChange={(e) =>
-                                          setBillets50(e.target.value)
-                                        }
+                                      
+                                        onChange={(e) => {
+                                            const input = e.target.value;
+                                            const regex =digits;
+                                            if (regex.test(input) || input === "") {
+                                                setBillets50(input);
+                                            }
+                                          }}
                                         className="form-control"
                                         placeholder="0"
                                       />
@@ -319,9 +340,14 @@ function index() {
                                           inputMode="numeric"
                                           disabled={isGab}
                                           value={pieces10}
-                                          onChange={(e) =>
-                                            setPieces10(e.target.value)
-                                          }
+                                         
+                                          onChange={(e) => {
+                                            const input = e.target.value;
+                                            const regex =digits;
+                                            if (regex.test(input) || input === "") {
+                                                setPieces10(input);
+                                            }
+                                          }}
                                           className="form-control"
                                           placeholder="0"
                                         />
@@ -344,9 +370,15 @@ function index() {
                                         disabled={isGab}
                                         inputMode="numeric"
                                         value={pieces5}
-                                        onChange={(e) =>
-                                          setPieces5(e.target.value)
-                                        }
+                                       
+
+                                        onChange={(e) => {
+                                            const input = e.target.value;
+                                            const regex =digits;
+                                            if (regex.test(input) || input === "") {
+                                                setPieces5(input);
+                                            }
+                                          }}
                                         className="form-control"
                                         placeholder="0"
                                       />
@@ -368,9 +400,14 @@ function index() {
                                         disabled={isGab}
                                         inputMode="numeric"
                                         value={pieces1}
-                                        onChange={(e) =>
-                                          setPieces1(e.target.value)
-                                        }
+                                      
+                                        onChange={(e) => {
+                                            const input = e.target.value;
+                                            const regex =digits;
+                                            if (regex.test(input) || input === "") {
+                                                setPieces1(input);
+                                            }
+                                          }}
                                         className="form-control"
                                         placeholder="0"
                                       />
