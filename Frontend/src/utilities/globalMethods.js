@@ -17,4 +17,14 @@ export function capitalizeFirstLetter(str) {
   return str;
 }
 
+export const getFormatedDate = (date, format = 'MMMM D', timeZone = '') => {
+  if (date && moment(date).isValid()) {
+      if (timeZone) {
+          return moment(date).tz(timeZone).format(format);
+      }
+      return moment(date).format(format);
+  }
+  return false;
+};
+
 
