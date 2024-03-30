@@ -30,11 +30,15 @@ function index() {
 
                             <Aside />
                             <div className="col-lg-9">
-
+                                <nav style={{ '--bs-breadcrumb-divider': 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'8\' height=\'8\'%3E%3Cpath d=\'M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z\' fill=\'currentColor\'/%3E%3C/svg%3E")' }} aria-label="breadcrumb">
+                                    <ol className="breadcrumb">
+                                        <li className="breadcrumb-item"><Link to="/dashboard">Home</Link></li>
+                                        <li className="breadcrumb-item active" aria-current="page">Ag</li>
+                                        <li className="breadcrumb-item active" aria-current="page">App</li>
+                                    </ol>
+                                </nav>
                                 <div className="bg-white shadow-sm rounded p-4 mb-4">
-                                    <h3 className="text-5 fw-400 d-flex align-items-center mb-4">Personal Details<a href="#edit-personal-details"
-                                        data-bs-toggle="modal" className="ms-auto text-2 text-uppercase btn-link"><span className="me-1"><i
-                                            className="fas fa-edit"></i></span>Edit</a></h3>
+                                    <h3 className="text-5 fw-400 d-flex align-items-center mb-4">Request money</h3>
                                     <hr className="mx-n4 mb-4">
                                     </hr>
                                     <div className="col-lg-11 mx-auto">

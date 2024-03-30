@@ -7,30 +7,30 @@ const index = () => {
     const [email, setEmail] = useState('');
     const [profilePic, setProfilePic] = useState('');
     const [userData, setuserData] = useState(null);
-    useEffect(()=>{
-       
-        const authdata=localStorage.getItem('user_data')
-        if(authdata){
-            const user=JSON.parse(authdata)
+    useEffect(() => {
+
+        const authdata = localStorage.getItem('user_data')
+        if (authdata) {
+            const user = JSON.parse(authdata)
             setFisrtName(user?.first_name)
             setlastName(user?.last_name)
             setEmail(user?.email)
             setProfilePic(user?.profile_pic)
             setuserData(user)
         }
-    },[])
+    }, [])
     return (
 
         <>
             <aside className="col-lg-3">
 
                 <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
-                    <div className="profile-thumb mt-3 mb-4"> 
-                    
-                    <img 
-                    height={100}
-                    width={100}
-                    className="rounded-circle" src={profilePic??"/src/assets/images/profile-thumb.jpg"} alt="" />
+                    <div className="profile-thumb mt-3 mb-4">
+
+                        <img
+                            height={100}
+                            width={100}
+                            className="rounded-circle" src={profilePic ?? "/src/assets/images/profile-thumb.jpg"} alt="" />
                         {/* <div className="profile-thumb-edit bg-primary text-white" data-bs-toggle="tooltip" title="Change Profile Picture"> <i className="fas fa-camera position-absolute"></i>
                             <input type="file" className="custom-file-input" id="customFile" />
                         </div> */}

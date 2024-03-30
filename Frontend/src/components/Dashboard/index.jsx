@@ -8,9 +8,9 @@ import { getUserProfileApi } from '../../services/authService';
 
 function index() {
   const [count, setCount] = useState(0)
-  useEffect(()=>{
-  getUserProfileApi()
-  },[])
+  useEffect(() => {
+    getUserProfileApi()
+  }, [])
 
   return (
     <>
@@ -22,7 +22,12 @@ function index() {
 
               <Aside />
               <div className="col-lg-9">
-                <h2 className="fw-400 mb-3">Transactions</h2>
+                <nav style={{ '--bs-breadcrumb-divider': 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'8\' height=\'8\'%3E%3Cpath d=\'M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z\' fill=\'currentColor\'/%3E%3C/svg%3E")' }} aria-label="breadcrumb">
+                  <ol className="breadcrumb">
+                    <li className="breadcrumb-item"><Link to="/dashboard">Home</Link></li>
+                    <li className="breadcrumb-item active" aria-current="page">Money  requests</li>
+                  </ol>
+                </nav>
 
                 <div className="row">
                   <div className="col mb-2">
@@ -206,7 +211,7 @@ function index() {
             </div>
           </div>
         </div>
-        
+
         <Footer />
       </div>
     </>
