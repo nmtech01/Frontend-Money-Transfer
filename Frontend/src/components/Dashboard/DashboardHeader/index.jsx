@@ -101,9 +101,9 @@ const index = () => {
                                                 AG
                                             </a>
                                             <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`} style={{ left: '-50%', minWidth: '140px' }}>
-                                                <li className="dropdown-item" onClick={handleDropdownClose}><a className="dropdown-item dropdown-toggle" href="#">COLL</a></li>
+                                                <li className="dropdown-item" onClick={handleDropdownClose}><Link className="dropdown-item dropdown-toggle" to="/collect-money">COLL</Link></li>
                                                 <li className="dropdown-item" onClick={handleDropdownClose}><Link className="dropdown-item dropdown-toggle" to="/app-form">APP</Link></li>
-                                                <li className="dropdown-item" onClick={handleDropdownClose}><a className="dropdown-item dropdown-toggle" href="#">CONS</a></li>
+                                                <li className="dropdown-item" onClick={handleDropdownClose}><Link className="dropdown-item dropdown-toggle" href="#">CONS</Link></li>
                                             </ul>
                                         </li>
                                         <li><a href="">Reporting</a></li>
@@ -136,26 +136,12 @@ const index = () => {
                                     <li className="dropdown profile ms-2" onMouseEnter={() => handleProfileHover(true)} onMouseLeave={() => handleProfileHover(false)}>
                                         <a className="px-0 dropdown-toggle" href="#">
                                             <img 
-                                            height={80}
-                                            width={80}
+                                            height={40}
+                                            width={40}
                                             className="rounded-circle" src={userData?.profile_pic??"/src/assets/images/profile_placeholder.png"} alt="" />
                                         </a>
                                        <ul className={`dropdown-menu ${isProfileOpen ? 'show' : ''}`} style={{ position:"absolute",right:10 }}>
-                                        <div className="d-flex align-items-center px-3">
-                                            <a className="px-0 dropdown-toggle" href="#">
-                                                <img 
-                                                    height={40}
-                                                    width={40}
-                                                    className="rounded-circle"
-                                                    src={userData?.profile_pic ?? "/src/assets/images/profile_placeholder.png"}
-                                                    alt=""
-                                                />
-                                            </a>
-                                            <div className="ml-2">
-                                                <li className="text-center text-3 py-2">Hi, {userData?.first_name + " " + userData?.last_name}</li>
-                                            </div>
-                                        </div>
-                                        <li className="dropdown-divider mx-n3"></li>
+                                        
                                         <li><Link className="dropdown-item" to="/my-profile"><i className="fas fa-user"></i> My Profile</Link></li>
                                         <li><Link className="dropdown-item" to="/change-password" ><i className="fas fa-key"></i> Change password</Link></li>
                                         <li className="dropdown-divider mx-n3"></li>
