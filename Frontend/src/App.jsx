@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css'
 import {  Routes, Route } from 'react-router-dom';
 import Login from '../src/components/Login/index'
@@ -16,6 +16,23 @@ import CollForm from '../src/components/COLL/index'
 
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if the user is logged in (e.g., by checking local storage, cookies, etc.)
+    // const userIsLoggedIn = checkIfUserIsLoggedIn();
+    // setLoggedIn(userIsLoggedIn);
+
+    // // Set up session timeout listener
+    // const sessionTimeout = setTimeout(() => {
+    //   // Clear session data or perform logout action
+    //   setLoggedIn(false);
+    // }, SESSION_TIMEOUT_DURATION);
+
+    // return () => {
+    //   clearTimeout(sessionTimeout);
+    // };
+  }, []);
 
   return (
     
