@@ -31,7 +31,11 @@ function index() {
     const [state, setState] = useState('');
     const [timeZone, setTimeZone] = useState('');
 
-
+    const authData= localStorage.getItem(
+        'user_data',
+      )
+      const AUTH_DATA=authData?JSON.parse(authData):null
+      var TOKEN= AUTH_DATA ?'Token '+AUTH_DATA?.token:null
 
 
     const showModal = () => {
@@ -45,6 +49,7 @@ function index() {
     };
    
     useEffect(() => {
+    
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         setTimeZone(userTimeZone);
         const authdata = localStorage.getItem('user_data')
@@ -61,7 +66,7 @@ function index() {
         }
     }, [])
     const getUserProfile = () => {
-        getUserProfileApi()
+        getUserProfileApi(TOKEN)
             .then((resp) => {
                 setIsLoading(false);
                 setIsEditProfile(false)
@@ -87,6 +92,7 @@ function index() {
     const uploadImage = (e) => {
         e.preventDefault();
         const file = e.target.files[0];
+        console.log("ddssdada",file);
         setProfilePic(file);
         setUploadProfile(file)
         setIsEditProfile(true)
@@ -101,7 +107,7 @@ function index() {
             PROFILE_PIC = URL.createObjectURL(uploadProfile)
         } 
         if(isProfileEdit &&uploadProfile!==''){
-            formData.append('profile_pic',PROFILE_PIC )
+            formData.append('profile_pic',uploadProfile )
         }
         
         formData.append('first_name', firstName)
@@ -112,13 +118,13 @@ function index() {
         formData.append('city', city)
         formData.append('state', state)
         console.log("formData", JSON.stringify(PROFILE_PIC));
-        updateUserProfileApi(formData)
+        updateUserProfileApi(formData,TOKEN)
             .then((resp) => {
                 setIsEditProfile(false)
                 setUploadProfile('')
                 setIsLoading(false);
                 if (resp?.data?.status == 200) {
-                    getUserProfile()
+                    getUserProfile(TOKEN)
                     toastId.current = toast.success(resp?.data?.message);
                     $(modalRef.current).modal('hide');
                 }
@@ -139,7 +145,11 @@ function index() {
     return (
         <>
             <div id="main-wrapper">
-                <Header />
+                <Header 
+                
+                pofile={isProfileEdit ? URL.createObjectURL(uploadProfile) : null}
+                
+                />
 
 
                 <div id="content" className="py-4">
@@ -211,9 +221,13 @@ function index() {
                                     id="edit-personal-details" className="modal fade " role="dialog" aria-hidden="true">
                                     <div className="modal-dialog modal-dialog-centered" role="document">
                                         <div className="modal-content">
-                                            <div className="modal-header">
+                                            <div 
+                                             onClick={()=>setIsEditProfile(false)}
+                                            className="modal-header">
                                                 <h5 className="modal-title fw-400">Personal Details</h5>
-                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button 
+                                                
+                                                type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
 
                                             <div className="modal-body p-4">

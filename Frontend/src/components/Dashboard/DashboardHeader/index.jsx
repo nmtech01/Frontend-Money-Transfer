@@ -20,7 +20,7 @@ import { logoutApi } from "../../../services/authService.js";
 import FullScreenLoader from "../../../commonComponent/FullScreenLoader.jsx";
 import { toast } from "react-toastify";
 
-const index = () => {
+const index = ({pofile}) => {
     const navigate=useNavigate();
     const toastId = React.useRef(null);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -40,13 +40,14 @@ const index = () => {
         setIsProfileOpen(isOpen);
     };
 
+    console.log("pofile--",pofile);
     useEffect(()=>{
         const authdata=localStorage.getItem('user_data')
         if(authdata){
             setuserData(JSON.parse(authdata))
         }
 
-    },[])
+    },[pofile])
 
         const logoutFn=(e)=>{
             e.preventDefault();
@@ -138,7 +139,11 @@ const index = () => {
                                             <img 
                                             height={40}
                                             width={40}
-                                            className="rounded-circle" src={userData?.profile_pic??"/src/assets/images/profile_placeholder.png"} alt="" />
+                                            className="rounded-circle" src={pofile??
+                                             
+                                                
+                                                
+                                              ( userData?.profile_pic??"/src/assets/images/profile_placeholder.png")} alt="" />
                                         </a>
                                        <ul className={`dropdown-menu ${isProfileOpen ? 'show' : ''}`} style={{ position:"absolute",right:10 }}>
                                         

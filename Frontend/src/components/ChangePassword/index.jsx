@@ -140,42 +140,44 @@ function index() {
                                     </div>
                                 </Modal> */}
 
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            
-                                            <div class="modal-body p-4">
-                                                <form id="changePassword" method="post">
-                                                    <div class="mb-3">
-                                                        <label for="existingPassword" class="form-label">Confirm Current Password</label>
-                                                        <input type="text" class="form-control" data-bv-field="existingpassword" id="existingPassword" 
-                                                         placeholder="Enter Current Password" 
-                                                         value={currentPassword}
-                                                         onChange={(e) => setCurrentPassword(e.target.value)}
-                                                         />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="newPassword" class="form-label">New Password</label>
-                                                        <input type="text" 
-                                                         value={newPassword}
-                                                         onChange={(e) => setNewPassword(e.target.value)}
-                                                        class="form-control" data-bv-field="newpassword" id="newPassword"  placeholder="Enter New Password" />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                                                        <input 
-                                                         value={confirmPassword}
-                                                         onChange={(e) => setConfirmPassword(e.target.value)}
-                                                        type="text" class="form-control" data-bv-field="confirmgpassword" id="confirmPassword"  placeholder="Enter Confirm New Password" />
-                                                    </div>
-                                                    <div class="d-grid mt-4"><button onClick={(e)=>changePassword(e)} class="btn btn-primary" type="submit">
-                                                        {isLoading?<Spinner/>:'Update Password'
+<div class="modal-dialog modal-dialog-centered custom-shadow" role="document">
+  <div class="modal-content">
+    <div class="modal-body p-4">
+      <form id="changePassword" method="post">
+        <div class="mb-3">
+          <label for="existingPassword" class="form-label">Confirm Current Password</label>
+          <input type="text" class="form-control" data-bv-field="existingpassword" id="existingPassword" 
+            placeholder="Enter Current Password" 
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+          />
+        </div>
+        <div class="mb-3">
+          <label for="newPassword" class="form-label">New Password</label>
+          <input type="text" 
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            class="form-control" data-bv-field="newpassword" id="newPassword"  placeholder="Enter New Password" 
+          />
+        </div>
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm New Password</label>
+          <input 
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            type="text" class="form-control" data-bv-field="confirmgpassword" id="confirmPassword"  placeholder="Enter Confirm New Password" 
+          />
+        </div>
+        <div class="d-grid mt-4">
+          <button onClick={(e)=>changePassword(e)} class="btn btn-primary" type="submit">
+            {isLoading ? <Spinner/> : 'Update Password'}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-
-                                                    }</button></div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
                             </div>
                         </div>
                     </div>
