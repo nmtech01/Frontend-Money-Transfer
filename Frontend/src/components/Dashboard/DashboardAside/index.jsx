@@ -29,6 +29,15 @@ const index = () => {
                 borderWidth: 5, // Remove border
             }]
         };
+        const columnData = {
+            labels: ['Category 1', 'Category 2', 'Category 3'],
+            datasets: [{
+                label: 'Data',
+                data: [50, 100, 150],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                borderWidth: 1
+            }]
+        };
 
         // Get the context of the canvas element where the chart will be drawn
         const ctx = document.getElementById('myPieChart').getContext('2d');
@@ -87,16 +96,19 @@ const index = () => {
                     <canvas id="myPieChart"></canvas>
                 </div>
                 <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
-                    <div className="text-17 text-light my-3"><i className="fas fa-wallet"></i></div>
-                    <h3 className="text-9 fw-400">${userData?.total_requested}</h3>
-                    <p className="mb-2 text-muted opacity-8">Available Balance</p>
+                    <div className="request-money"></div>
+                <h4 className="text-4  mb-3">Requested Money</h4>
+                <hr></hr>
+
+                    <div className="text-17 text-light my-3"><i className=" text-primary fas fa-wallet"></i></div>
+                    <h3 className="text-9 text-primary fw-400">${userData?.total_requested}</h3>
                     {/* <hr className="mx-n3"></hr> */}
                     {/* <div className="d-flex"><a href="withdraw-money.html" className="btn-link me-auto">Withdraw</a> <a href="deposit-money.html" className="btn-link ms-auto">Deposit</a></div> */}
                 </div>
                 <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
-                    <div className="text-17 text-light my-3"><i className="fas fa-comments"></i></div>
+                    <div className="text-17 text-light my-3"><i className="text-primary fas fa-comments"></i></div>
                     <h3 className="text-5 fw-400 my-4">Need Help?</h3>
-                    <p className="text-muted opacity-8 mb-4">Have questions or concerns regrading your account?<br></br>
+                    <p className="text-primary opacity-8 mb-4">Have questions or concerns regrading your account?<br></br>
                         Our experts are here to help!.</p>
                     <div className="d-grid"><a href="#" className="btn btn-primary">Chate with Us</a></div>
                 </div>

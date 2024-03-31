@@ -43,7 +43,7 @@ function index() {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-   
+
     useEffect(() => {
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         setTimeZone(userTimeZone);
@@ -67,7 +67,7 @@ function index() {
                 setIsEditProfile(false)
                 if (resp?.data?.status == 200) {
                     const user = resp?.data?.data
-                   
+
                     setFisrtName(user?.first_name)
                     setlastName(user?.last_name)
                     setEmail(user?.email)
@@ -99,16 +99,16 @@ function index() {
         const formData = new FormData();
         if (uploadProfile instanceof File || uploadProfile instanceof Blob) {
             PROFILE_PIC = URL.createObjectURL(uploadProfile)
-        } 
-        if(isProfileEdit &&uploadProfile!==''){
-            formData.append('profile_pic',PROFILE_PIC )
         }
-        
+        if (isProfileEdit && uploadProfile !== '') {
+            formData.append('profile_pic', PROFILE_PIC)
+        }
+
         formData.append('first_name', firstName)
         formData.append('last_name', lastName)
         formData.append('email', email)
         formData.append('address', address)
-        
+
         formData.append('city', city)
         formData.append('state', state)
         console.log("formData", JSON.stringify(PROFILE_PIC));
@@ -159,8 +159,8 @@ function index() {
 
 
 
-                                <div className="bg-white shadow-sm rounded p-4 mb-4">
-                                    <h3 className="text-5 fw-400 d-flex align-items-center mb-4 ">Personal Details<a href="#edit-personal-details"
+                                <div className="bg-white shadow-sm rounded  mb-4">
+                                    <h3 className="form-header-css text-5 fw-400 d-flex align-items-center mb-4 ">Personal Details<a href="#edit-personal-details"
                                         data-bs-toggle="modal" className="ms-auto text-2 text-uppercase btn-link"><span className="me-1"><i
                                             className="fas fa-edit"></i></span>Edit</a></h3>
                                     <hr className="mx-n4 mb-4">
@@ -291,7 +291,7 @@ function index() {
                                                         <div className="col-12 col-sm-6">
                                                             <label htmlFor="city" className="form-label">City</label>
                                                             <input
-                                                            
+
                                                                 onChange={(e) => setCity(e?.target?.value)}
                                                                 id="city" value={city} type="text" className="form-control"
                                                                 placeholder="City" />
@@ -323,28 +323,19 @@ function index() {
 
 
 
+                                <div className="bg-white shadow-sm rounded mb-4">
+                                    <h3 className="form-header-css text-5 fw-400 d-flex align-items-center mb-4">Account Settings</h3>
+                                    <hr className="mx-n4 mb-4"></hr>
 
-
-
-
-
-
-
-
-
-                                <div className="bg-white shadow-sm rounded p-4 mb-4">
-            <h3 className="text-5 fw-400 d-flex align-items-center mb-4">Account Settings</h3>
-            <hr className="mx-n4 mb-4"></hr>
-
-            <div className="row gx-3 align-items-center">
-                <p className="col-sm-3 text-primary text-sm-end mb-0 mb-sm-3">Time Zone:</p>
-                <p className="col-sm-9 text-3">{timeZone}</p>
-            </div>
-            <div className="row gx-3 align-items-center">
-                <p className="col-sm-3 text-primary text-sm-end mb-0 mb-sm-3">Account Status:</p>
-                <p className="col-sm-9 text-3"><span className="bg-success text-white rounded-pill d-inline-block px-2 mb-0"><i className="fas fa-check-circle"></i> Active</span></p>
-            </div>
-        </div>
+                                    <div className="row gx-3 align-items-center">
+                                        <p className="col-sm-3 text-primary text-sm-end mb-0 mb-sm-3">Time Zone:</p>
+                                        <p className="col-sm-9 text-3">{timeZone}</p>
+                                    </div>
+                                    <div className="row gx-3 align-items-center">
+                                        <p className="col-sm-3 text-primary text-sm-end mb-0 mb-sm-3">Account Status:</p>
+                                        <p className="col-sm-9 text-3"><span className="bg-success text-white rounded-pill d-inline-block px-2 mb-0"><i className="fas fa-check-circle"></i> Active</span></p>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>

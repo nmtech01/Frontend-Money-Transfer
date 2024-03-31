@@ -101,9 +101,10 @@ const index = () => {
                                                 AG
                                             </a>
                                             <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`} style={{ left: '-50%', minWidth: '140px' }}>
-                                                <li className="dropdown-item" onClick={handleDropdownClose}><Link className="dropdown-item dropdown-toggle" to="/collect-money">COLL</Link></li>
-                                                <li className="dropdown-item" onClick={handleDropdownClose}><Link className="dropdown-item dropdown-toggle" to="/app-form">APP</Link></li>
-                                                <li className="dropdown-item" onClick={handleDropdownClose}><Link className="dropdown-item dropdown-toggle" href="#">CONS</Link></li>
+                                                <li onClick={handleDropdownClose}><Link className="dropdown-item " to="/collect-money">COLL</Link></li>
+                                                <li onClick={handleDropdownClose}><Link className="dropdown-item " to="/app-form">APP</Link></li>
+                                                <li onClick={handleDropdownClose}><Link className="dropdown-item " href="#">CONS</Link></li>
+
                                             </ul>
                                         </li>
                                         <li><a href="">Reporting</a></li>
