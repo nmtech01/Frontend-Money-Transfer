@@ -152,9 +152,10 @@ function index() {
                           return (
                             <div key={id} className="transaction-list">
                               <div
+                              style={{pointerEvents:'none'}}
                                 className="transaction-item px-4 py-3"
                                 data-bs-target="#transaction-detail"
-                                onClick={() => showTModal(id)}
+                                // onClick={() => showTModal(id)}
                               >
                                 <div className="row align-items-center flex-row">
                                   <div className="col-2 col-sm-1 text-center">
@@ -260,7 +261,7 @@ function index() {
                                         <div className="col">
                                           <div className="form-check form-switch d-flex align-items-center justify-content-center">
                                             <input
-                                              checked={transactionDetail?.gab}
+                                              checked={transactionDetail?.gab==1?true:false }
                                               onChange={(e)=>setCount(0)}
                                               className="form-check-input"
                                               type="checkbox"
