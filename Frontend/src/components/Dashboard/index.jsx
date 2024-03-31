@@ -259,7 +259,7 @@ function index() {
                                         <div className="col">
                                           <div className="form-check form-switch d-flex align-items-center justify-content-center">
                                             <input
-                                              checked={transactionDetail?.gab}
+                                              checked={transactionDetail?.gab==1?true:false }
                                               onChange={(e)=>setCount(0)}
                                               className="form-check-input"
                                               type="checkbox"

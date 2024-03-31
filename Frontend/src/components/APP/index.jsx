@@ -85,7 +85,7 @@ function index() {
       pieces_10: pieces10 === "" ? 0 : parseInt(pieces10),
       pieces_5: pieces5 === "" ? 0 : parseInt(pieces5),
       pieces_1: pieces1 === "" ? 0 : parseInt(pieces1),
-      gab: isGab
+      gab: isGab?1:0
     };
 
     requestMoneyApi(param)
