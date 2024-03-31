@@ -217,6 +217,7 @@ function index() {
                       open={isModalOpen}
                       onOk={handleOk}
                       onCancel={handleCancel}
+                      id="transaction-detail"
                     >
                       <div
                         className="modal-dialog modal-dialog-centered transaction-details"

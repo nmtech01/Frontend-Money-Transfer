@@ -125,11 +125,11 @@ function index() {
             <div className="row">
               <Aside />
               <div className="col-lg-9">
-                <div className="bg-white shadow-sm rounded p-4 mb-4">
-                  <h3 className="text-5 fw-400 d-flex align-items-center mb-4">
+                <div className="bg-white shadow-sm rounded mb-4">
+                  <h3 className="form-header-css text-5 fw-400 d-flex align-items-center  ">
                     Request Amount
                   </h3>
-                  <hr className="mx-n4 mb-4"></hr>
+                  <hr className="mx-n4 mb-2"></hr>
                   <div className="col-lg-11 mx-auto">
                     <div className="row widget-steps">
                       <div className="col-4 step active">
