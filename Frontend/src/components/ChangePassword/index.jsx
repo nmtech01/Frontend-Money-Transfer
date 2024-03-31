@@ -141,7 +141,7 @@ function index() {
                                 </Modal> */}
                                 <div className="bg-white shadow-sm rounded mb-1">
                                     <h3 className="form-header-css text-5 fw-400 d-flex align-items-center ">Change Password</h3>
-                                    <hr className="mx-n4 mb-4"></hr>
+                                    <hr className="mx-n4 mb-4" style={{marginBottom:'1px'}}></hr>
 
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                     {/* <div class="modal-content"> */}

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { emailReg } from "../../utilities/validators";
 import Spinner from "../../commonComponent/Spinner";
-import { login, loginApi } from "../../services/authService";
+import {loginApi } from "../../services/authService";
 
 function index() {
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ function index() {
         setIsLoading(false);
         if (resp?.data?.status == 200) {
           toastId.current = toast.success(resp?.data?.message);
-          navigate('/Dashboard')
+            navigate('/Dashboard')
         }
         else {
           toastId.current = toast.error(resp?.data?.message);

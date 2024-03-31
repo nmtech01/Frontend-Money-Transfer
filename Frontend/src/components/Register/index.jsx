@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { emailReg } from "../../utilities/validators";
 import Spinner from "../../commonComponent/Spinner";
-import { signup, sigupApi } from "../../services/authService";
+import { sigupApi } from "../../services/authService";
 
 
 function index() {

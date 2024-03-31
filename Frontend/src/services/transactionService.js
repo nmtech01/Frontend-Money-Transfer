@@ -7,7 +7,6 @@ const authData= localStorage.getItem(
 const AUTH_DATA=authData?JSON.parse(authData):null
 var TOKEN= AUTH_DATA ?'Token '+AUTH_DATA?.token:null
 
-
 export function requestMoneyApi(data) {
 
   return new Promise((resolve, reject) =>
@@ -38,7 +37,7 @@ export function getTransactionListAPI(data) {
       `${BASE_URL}${TRANSACTIONS.transactionList}`,
       {
         headers: {
-          Authorization:TOKEN,
+          Authorization:data,
         },
       }
       )

@@ -29,9 +29,14 @@ function index() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
-    getUserProfileApi();
+    const authData= localStorage.getItem(
+      'user_data',
+    )
+    const AUTH_DATA=authData?JSON.parse(authData):null
+    var TOKEN= AUTH_DATA ?'Token '+AUTH_DATA?.token:null
     setIsLoading(true);
-    getTransactionListAPI()
+    getUserProfileApi(TOKEN);
+    getTransactionListAPI(TOKEN)
       .then((resp) => {
         setIsLoading(false);
         if (resp?.data?.status == 200) {
@@ -169,18 +174,18 @@ function index() {
                                     </span>
                                   </div>
                                   <div className="col-auto col-sm-2 text-center text-3">
-  {type_id === 0 ? (
-    <span className="text-nowrap text-primary">
-      <i className="fas fa-hourglass-start"></i> Requested
-    </span>
-  ) : (
-    <span className="text-nowrap text-success">
-      <i className="fas fa-check-circle"></i> Collected
-    </span>
-  )}
-</div>
-
-
+                                    {type_id === 0 ? (
+                                      <span className="text-nowrap text-primary">
+                                        <i className="fas fa-hourglass-start"></i>{" "}
+                                        Requested
+                                      </span>
+                                    ) : (
+                                      <span className="text-nowrap text-success">
+                                        <i className="fas fa-check-circle"></i>{" "}
+                                        Collected
+                                      </span>
+                                    )}
+                                  </div>
 
                                   <div className="col-3 col-sm-3 text-end text-4">
                                     <span className="text-nowrap text-primary">
@@ -255,6 +260,7 @@ function index() {
                                           <div className="form-check form-switch d-flex align-items-center justify-content-center">
                                             <input
                                               checked={transactionDetail?.gab}
+                                              onChange={(e)=>setCount(0)}
                                               className="form-check-input"
                                               type="checkbox"
                                               id="toggleGAB"
@@ -262,6 +268,7 @@ function index() {
                                                 height: "22px",
                                                 width: "40px",
                                               }}
+                                              disabled
                                             />
                                             <label
                                               className="form-check-label mb-0"

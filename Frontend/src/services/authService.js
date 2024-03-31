@@ -7,42 +7,9 @@ const authData= localStorage.getItem(
 )
 const AUTH_DATA=authData?JSON.parse(authData):null
 var TOKEN= AUTH_DATA ?'Token '+AUTH_DATA?.token:null
-function login(param) {
-  return new Promise((resolve, reject) => {
-    ApiClient.post(`${BASE_URL}${AUTH.login}`, param)
-      .then((resp) => {
-        // localStorage.setItem(
-        //   "authToken",
-        //   resp.data?.payload?.token ? resp.data?.payload?.token : ""
-        // );
-        resolve(resp);
-      })
-      .catch((error) => {
-        const errorMsg = error?.response?.data?.msg || "An error occurred";
-        toast.error(errorMsg);
-        reject(errorMsg);
-      });
-  });
-}
+console.log("TOKENE--",TOKEN);
 
-function signup(body) {
-  return new Promise((resolve, reject) => {
-    ApiClient.post(`${BASE_URL}${AUTH.signup}`, body)
-      .then((resp) => {
-        // localStorage.setItem(
-        //   "authToken",
-        //   resp.data?.payload?.token ? resp.data?.payload?.token : ""
-        // );
-        
-        resolve(resp);
-      })
-      .catch((error) => {
-        const errorMsg = error?.response?.data?.msg || "An error occurred";
-        toast.error(errorMsg);
-        reject(errorMsg);
-      });
-  });
-}
+
 
 export function loginApi(data) {
   return new Promise((resolve, reject) =>
@@ -53,6 +20,7 @@ export function loginApi(data) {
       )
       .then(function (response) {
         localStorage.setItem('user_data',JSON.stringify(response?.data?.data))
+        
         resolve(response);
       })
       .catch(function (error) {
@@ -85,7 +53,7 @@ export function getUserProfileApi(data) {
         `${BASE_URL}${AUTH.getUserProfile}`,
         {
           headers: {
-            Authorization:TOKEN,
+            Authorization:data??TOKEN,
           },
         }
       )
@@ -99,7 +67,7 @@ export function getUserProfileApi(data) {
       })
   );
 }
-export function updateUserProfileApi(data) {
+export function updateUserProfileApi(data,Token) {
 
   return new Promise((resolve, reject) =>
     axios
@@ -110,7 +78,7 @@ export function updateUserProfileApi(data) {
           headers: {
             "Content-Type": "multipart/form-data",
             Accept: "application/json",
-            Authorization:TOKEN,
+            Authorization:Token,
           },
         }
       )
@@ -192,7 +160,8 @@ export function logoutApi(data) {
       )
       .then(function (response) {
         console.log("Response",response);
-      //  localStorage.removeItem('user_data')
+       localStorage.removeItem('user_data')
+       console.log("After removal:", localStorage.getItem('user_data'));
         resolve(response);
       })
       .catch(function (error) {
@@ -203,4 +172,4 @@ export function logoutApi(data) {
       })
   );
 }
-export { login, signup };
+

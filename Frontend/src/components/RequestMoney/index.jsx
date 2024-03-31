@@ -10,7 +10,9 @@ function index() {
     return (
         <>
             <div id="main-wrapper">
-                <Header />
+                <Header 
+                     pofile={null}
+                />
 
                 <div id="content" className="py-4">
                     <div className="container">
