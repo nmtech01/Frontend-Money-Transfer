@@ -23,11 +23,14 @@ function index() {
     const [email, setEmail] = useState('');
     const [profilePic, setProfilePic] = useState('');
     const [isProfileEdit, setIsEditProfile] = useState(false);
+    const [uploadProfile, setUploadProfile] = useState('');
 
     const [address, setAddress] = useState('');
 
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
+    const [timeZone, setTimeZone] = useState('');
+
 
 
 
@@ -40,13 +43,13 @@ function index() {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
+   
     useEffect(() => {
-
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        setTimeZone(userTimeZone);
         const authdata = localStorage.getItem('user_data')
         if (authdata) {
             const user = JSON.parse(authdata)
-        
-
             setFisrtName(user?.first_name)
             setlastName(user?.last_name)
             setEmail(user?.email)
@@ -85,24 +88,34 @@ function index() {
         e.preventDefault();
         const file = e.target.files[0];
         setProfilePic(file);
+        setUploadProfile(file)
         setIsEditProfile(true)
     };
 
     const updateUserProfile = (e) => {
         e.preventDefault();
         setIsLoading(true);
+        let PROFILE_PIC;
         const formData = new FormData();
+        if (uploadProfile instanceof File || uploadProfile instanceof Blob) {
+            PROFILE_PIC = URL.createObjectURL(uploadProfile)
+        } 
+        if(isProfileEdit &&uploadProfile!==''){
+            formData.append('profile_pic',PROFILE_PIC )
+        }
+        
         formData.append('first_name', firstName)
-        formData.append('last_name', firstName)
+        formData.append('last_name', lastName)
         formData.append('email', email)
         formData.append('address', address)
-        formData.append('profile_pic', URL.createObjectURL(profilePic))
+        
         formData.append('city', city)
         formData.append('state', state)
-        console.log("formData", formData);
+        console.log("formData", JSON.stringify(PROFILE_PIC));
         updateUserProfileApi(formData)
             .then((resp) => {
                 setIsEditProfile(false)
+                setUploadProfile('')
                 setIsLoading(false);
                 if (resp?.data?.status == 200) {
                     getUserProfile()
@@ -211,7 +224,7 @@ function index() {
                                                                 height={100}
                                                                 width={100}
                                                                 className="rounded-circle"
-                                                                src={isProfileEdit ? URL.createObjectURL(profilePic) : (profilePic ?? "/src/assets/images/profile_placeholder.png")}
+                                                                src={isProfileEdit ? URL.createObjectURL(uploadProfile) : (profilePic ?? "/src/assets/images/profile_placeholder.png")}
                                                                 alt=""
                                                             />
 
@@ -320,18 +333,18 @@ function index() {
 
 
                                 <div className="bg-white shadow-sm rounded p-4 mb-4">
-                                    <h3 className="text-5 fw-400 d-flex align-items-center mb-4">Account Settings</h3>
-                                    <hr className="mx-n4 mb-4"></hr>
+            <h3 className="text-5 fw-400 d-flex align-items-center mb-4">Account Settings</h3>
+            <hr className="mx-n4 mb-4"></hr>
 
-                                    <div className="row gx-3 align-items-center">
-                                        <p className="col-sm-3 text-primary text-sm-end mb-0 mb-sm-3">Time Zone:</p>
-                                        <p className="col-sm-9 text-3">(GMT-06:00) Central America</p>
-                                    </div>
-                                    <div className="row gx-3 align-items-center">
-                                        <p className="col-sm-3 text-primary text-sm-end mb-0 mb-sm-3">Account Status:</p>
-                                        <p className="col-sm-9 text-3"><span className="bg-success text-white rounded-pill d-inline-block px-2 mb-0"><i className="fas fa-check-circle"></i> Active</span></p>
-                                    </div>
-                                </div>
+            <div className="row gx-3 align-items-center">
+                <p className="col-sm-3 text-primary text-sm-end mb-0 mb-sm-3">Time Zone:</p>
+                <p className="col-sm-9 text-3">{timeZone}</p>
+            </div>
+            <div className="row gx-3 align-items-center">
+                <p className="col-sm-3 text-primary text-sm-end mb-0 mb-sm-3">Account Status:</p>
+                <p className="col-sm-9 text-3"><span className="bg-success text-white rounded-pill d-inline-block px-2 mb-0"><i className="fas fa-check-circle"></i> Active</span></p>
+            </div>
+        </div>
 
                             </div>
                         </div>

@@ -51,7 +51,26 @@ export function getTransactionListAPI(data) {
       })
   );
 }
-
+export function getTransactionDetailAPI(data) {
+  return new Promise((resolve, reject) =>
+    axios
+    .get(
+      `${BASE_URL}${TRANSACTIONS.transactionDetail}${data?.id}`,
+      {
+        headers: {
+          Authorization:TOKEN,
+        },
+      }
+      )
+      .then(function (response) {
+        resolve(response);
+      })
+      .catch(function (error) {
+        reject(error);
+        
+      })
+  );
+}
 export function withdrawMoneyApi(data) {
   return new Promise((resolve, reject) =>
     axios

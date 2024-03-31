@@ -26,5 +26,39 @@ export const getFormatedDate = (date, format = 'MMMM D', timeZone = '') => {
   }
   return false;
 };
+ export  const calculateBillets = (billets200, billets100, billets50) => {
+  const total =
+    (parseInt(billets200) > 0 ? parseInt(billets200) * 200 : 0) +
+    (parseInt(billets100) > 0 ? parseInt(billets100) * 100 : 0) +
+    (parseInt(billets50) > 0 ? parseInt(billets50) * 50 : 0) 
+  
 
+  return total;
+};
+  export const calculatePieces = (pieces10, pieces5, pieces1) => {
+  const total =
+    (parseInt(pieces10) > 0 ? parseInt(pieces10) * 10 : 0) +
+    (parseInt(pieces5) > 0 ? parseInt(pieces5) * 5 : 0) +
+    (parseInt(pieces1) > 0 ? parseInt(pieces1) * 1 : 0);
 
+  return total;
+};
+
+export const calculateTotal = () => {
+  const total =
+    (parseInt(billets200) > 0 ? parseInt(billets200) * 200 : 0) +
+    (parseInt(billets100) > 0 ? parseInt(billets100) * 100 : 0) +
+    (parseInt(billets50) > 0 ? parseInt(billets50) * 50 : 0) +
+    (parseInt(pieces10) > 0 ? parseInt(pieces10) * 10 : 0) +
+    (parseInt(pieces5) > 0 ? parseInt(pieces5) * 5 : 0) +
+    (parseInt(pieces1) > 0 ? parseInt(pieces1) * 1 : 0);
+
+  return total;
+};
+
+export const isAmountValid = () => {
+  const total = calculateTotal();
+  const parsedAmount = parseInt(amount); // Parse amount as integer
+
+  return !isNaN(parsedAmount) && total === parsedAmount; // Check if amount is a valid integer and equals total
+};
