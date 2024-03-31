@@ -10,11 +10,11 @@ import { requestMoneyApi } from "../../services/transactionService";
 import FullScreenLoader from "../../commonComponent/FullScreenLoader";
 import ConfirmationModal from "../../commonComponent/ConfirmationModal";
 import { digits } from "../../utilities/validators";
+import { isAmountValid } from "../../utilities/globalMethods";
 
 function index() {
   const navigate = useNavigate();
   const toastId = React.useRef(null);
-
 
   const [visible, setVisible] = useState(false);
   const [amount, setAmount] = useState("");
@@ -36,11 +36,11 @@ function index() {
       return;
     }
     if (isNaN(amount)) {
-        if (!toast.isActive(toastId.current)) {
-          toastId.current = toast.error("Amount must be a valid number");
-        }
-        return;
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.error("Amount must be a valid number");
       }
+      return;
+    }
     if (!isAmountValid()) {
       if (!toast.isActive(toastId.current)) {
         toastId.current = toast.error(
@@ -51,39 +51,25 @@ function index() {
     }
     showModal();
   };
+
   const onCancel = (e) => {
     e.preventDefault();
     navigate("/dashboard");
   };
-  const calculateTotal = () => {
-    const total =
-      (parseInt(billets200) > 0 ? parseInt(billets200) * 200 : 0) +
-      (parseInt(billets100) > 0 ? parseInt(billets100) * 100 : 0) +
-      (parseInt(billets50) > 0 ? parseInt(billets50) * 50 : 0) +
-      (parseInt(pieces10) > 0 ? parseInt(pieces10) * 10 : 0) +
-      (parseInt(pieces5) > 0 ? parseInt(pieces5) * 5 : 0) +
-      (parseInt(pieces1) > 0 ? parseInt(pieces1) * 1 : 0);
 
-    return total;
-  };
-
-  const isAmountValid = () => {
-    const total = calculateTotal();
-    const parsedAmount = parseInt(amount); // Parse amount as integer
-
-    return !isNaN(parsedAmount) && total === parsedAmount; // Check if amount is a valid integer and equals total
-  };
   const onToggleGab = (value) => {
     setIsGab(value);
-    if (value == true) {
+    if (value === true) {
       setPieces1("");
       setPieces10("");
       setPieces5("");
     }
   };
+
   const showModal = () => {
     setVisible(true);
   };
+
   const closeModal = () => {
     setVisible(false);
   };
@@ -99,12 +85,13 @@ function index() {
       pieces_10: pieces10 === "" ? 0 : parseInt(pieces10),
       pieces_5: pieces5 === "" ? 0 : parseInt(pieces5),
       pieces_1: pieces1 === "" ? 0 : parseInt(pieces1),
+      gab: isGab
     };
 
     requestMoneyApi(param)
       .then((resp) => {
         setIsLoading(false);
-        if (resp?.data?.status == 200) {
+        if (resp?.data?.status === 200) {
           toastId.current = toast.success(resp?.data?.message);
           navigate("/dashboard");
         } else {
@@ -116,6 +103,7 @@ function index() {
         toastId.current = toast.error(error);
       });
   };
+
   return (
     <>
       <div id="main-wrapper">
@@ -132,7 +120,7 @@ function index() {
           <p>Are you sure you want to confirm?</p>
         </ConfirmationModal>
 
-        <div id="content" className="py-4">
+        <div id="content" className="py-4 gradient-bg">
           <div className="container">
             <div className="row">
               <Aside />
@@ -140,16 +128,6 @@ function index() {
                 <div className="bg-white shadow-sm rounded p-4 mb-4">
                   <h3 className="text-5 fw-400 d-flex align-items-center mb-4">
                     Request Amount
-                    {/* <a
-                      href="#edit-personal-details"
-                      data-bs-toggle="modal"
-                      className="ms-auto text-2 text-uppercase btn-link"
-                    >
-                      <span className="me-1">
-                        <i className="fas fa-edit"></i>
-                      </span>
-                      Edit
-                    </a> */}
                   </h3>
                   <hr className="mx-n4 mb-4"></hr>
                   <div className="col-lg-11 mx-auto">
@@ -190,12 +168,11 @@ function index() {
                               value={amount}
                               onChange={(e) => {
                                 const input = e.target.value;
-                                const regex =digits;
+                                const regex = digits;
                                 if (regex.test(input) || input === "") {
                                   setAmount(input);
                                 }
                               }}
-                              //   type="number"
                               className="form-control"
                               id="amount"
                               required
@@ -214,7 +191,9 @@ function index() {
                             <div className="form-check form-switch">
                               <input
                                 checked={isGab}
-                                onChange={(e) => onToggleGab(e?.target.checked)}
+                                onChange={(e) =>
+                                  onToggleGab(e?.target.checked)
+                                }
                                 className="form-check-input"
                                 type="checkbox"
                                 id="toggleGAB"
@@ -247,14 +226,16 @@ function index() {
                                       <input
                                         value={billets200}
                                         inputMode="numeric"
-                                      
                                         onChange={(e) => {
-                                            const input = e.target.value;
-                                            const regex =digits;
-                                            if (regex.test(input) || input === "") {
-                                                setBillets200(input);
-                                            }
-                                          }}
+                                          const input = e.target.value;
+                                          const regex = digits;
+                                          if (
+                                            regex.test(input) ||
+                                            input === ""
+                                          ) {
+                                            setBillets200(input);
+                                          }
+                                        }}
                                         className="form-control"
                                         placeholder="0"
                                       />
@@ -275,14 +256,16 @@ function index() {
                                       <input
                                         value={billets100}
                                         inputMode="numeric"
-                                       
                                         onChange={(e) => {
-                                            const input = e.target.value;
-                                            const regex =digits;
-                                            if (regex.test(input) || input === "") {
-                                                setBillets100(input);
-                                            }
-                                          }}
+                                          const input = e.target.value;
+                                          const regex = digits;
+                                          if (
+                                            regex.test(input) ||
+                                            input === ""
+                                          ) {
+                                            setBillets100(input);
+                                          }
+                                        }}
                                         className="form-control"
                                         placeholder="0"
                                       />
@@ -303,14 +286,16 @@ function index() {
                                       <input
                                         inputMode="numeric"
                                         value={billets50}
-                                      
                                         onChange={(e) => {
-                                            const input = e.target.value;
-                                            const regex =digits;
-                                            if (regex.test(input) || input === "") {
-                                                setBillets50(input);
-                                            }
-                                          }}
+                                          const input = e.target.value;
+                                          const regex = digits;
+                                          if (
+                                            regex.test(input) ||
+                                            input === ""
+                                          ) {
+                                            setBillets50(input);
+                                          }
+                                        }}
                                         className="form-control"
                                         placeholder="0"
                                       />
@@ -325,7 +310,7 @@ function index() {
                             <table className="table">
                               <tbody>
                                 <tr>
-                                  <td>
+                             
                                     <div className="row mb-3">
                                       <div className="col-2">
                                         <label
@@ -340,12 +325,14 @@ function index() {
                                           inputMode="numeric"
                                           disabled={isGab}
                                           value={pieces10}
-                                         
                                           onChange={(e) => {
                                             const input = e.target.value;
-                                            const regex =digits;
-                                            if (regex.test(input) || input === "") {
-                                                setPieces10(input);
+                                            const regex = digits;
+                                            if (
+                                              regex.test(input) ||
+                                              input === ""
+                                            ) {
+                                              setPieces10(input);
                                             }
                                           }}
                                           className="form-control"
@@ -353,7 +340,7 @@ function index() {
                                         />
                                       </div>
                                     </div>
-                                  </td>
+                              
                                 </tr>
                                 <tr>
                                   <div className="row mb-3">
@@ -370,15 +357,16 @@ function index() {
                                         disabled={isGab}
                                         inputMode="numeric"
                                         value={pieces5}
-                                       
-
                                         onChange={(e) => {
-                                            const input = e.target.value;
-                                            const regex =digits;
-                                            if (regex.test(input) || input === "") {
-                                                setPieces5(input);
-                                            }
-                                          }}
+                                          const input = e.target.value;
+                                          const regex = digits;
+                                          if (
+                                            regex.test(input) ||
+                                            input === ""
+                                          ) {
+                                            setPieces5(input);
+                                          }
+                                        }}
                                         className="form-control"
                                         placeholder="0"
                                       />
@@ -400,14 +388,16 @@ function index() {
                                         disabled={isGab}
                                         inputMode="numeric"
                                         value={pieces1}
-                                      
                                         onChange={(e) => {
-                                            const input = e.target.value;
-                                            const regex =digits;
-                                            if (regex.test(input) || input === "") {
-                                                setPieces1(input);
-                                            }
-                                          }}
+                                          const input = e.target.value;
+                                          const regex = digits;
+                                          if (
+                                            regex.test(input) ||
+                                            input === ""
+                                          ) {
+                                            setPieces1(input);
+                                          }
+                                        }}
                                         className="form-control"
                                         placeholder="0"
                                       />
@@ -487,7 +477,7 @@ function index() {
                             <div className="d-grid">
                               <button
                                 onClick={(e) => onCancel(e)}
-                                className="btn btn-primary"
+                                className="btn btn-secondary"
                               >
                                 Cancel
                               </button>
