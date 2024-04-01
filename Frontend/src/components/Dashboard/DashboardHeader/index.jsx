@@ -90,7 +90,8 @@ const index = ({pofile}) => {
                     <div className="header-row">
                         <div className="header-column justify-content-start">
                             <div className="logo me-3"> <a className="d-flex" href="/dashboard" title="HTML Template">
-                                <img src="/src/assets/images/logo.png" width="80" height="60" alt="" />
+                                <img src="/src/assets/images/logo.png" width="50" height="50" alt="" />
+                                {/* <i class="bg-white fa-solid fa-money-bills"></i> */}
                             </a> </div>
                             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#header-nav"> <span></span> <span></span> <span></span> </button>
 
