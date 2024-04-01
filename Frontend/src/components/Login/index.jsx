@@ -1,10 +1,55 @@
-import { useState, } from 'react'
-import Header from "../Header/Header";
-import { Link } from 'react-router-dom';
-
+import React, { useState, } from 'react'
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { emailReg } from "../../utilities/validators";
+import Spinner from "../../commonComponent/Spinner";
+import {loginApi } from "../../services/authService";
 
 function index() {
-  const [count, setCount] = useState(0)
+  const navigate = useNavigate();
+  const toastId = React.useRef(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    var pattern = new RegExp(emailReg);
+    var resultemail = pattern.test(email);
+    if (resultemail === false) {
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.error("Please enter valid email");
+      }
+      return;
+    }
+    if (password === "") {
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.error("Please enter valid password");
+      }
+      return;
+    }
+    setIsLoading(true);
+    const param = {
+      email: email,
+      password: password,
+    };
+    loginApi(param)
+      .then((resp) => {
+        setIsLoading(false);
+        if (resp?.data?.status == 200) {
+          toastId.current = toast.success(resp?.data?.message);
+            navigate('/Dashboard')
+        }
+        else {
+          toastId.current = toast.error(resp?.data?.message);
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        toastId.current = toast.error(error);
+      });
+  };
 
 
   return (
@@ -41,29 +86,69 @@ function index() {
                     <form id="loginForm" method="post">
                       <div className="mb-3">
                         <label htmlFor="emailAddress" className="form-label">Email Address</label>
-                        <input type="email" className="form-control" id="emailAddress" required placeholder="Enter Your Email" />
+                        <input
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          type="email" className="form-control" id="emailAddress"
+                          //  required 
+                          placeholder="Enter Your Email" />
                       </div>
                       <div className="mb-3">
                         <label htmlFor="loginPassword" className="form-label">Password</label>
-                        <input type="password" className="form-control" id="loginPassword" required placeholder="Enter Password" />
+                        <div className="input-group">
+                          <input
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            type={showPassword ? "text" : "password"}
+                            className="form-control"
+                            id="loginPassword"
+                            placeholder="Enter Password"
+                            aria-describedby="passwordToggle"
+                          />
+                          <span
+                            className="input-group-text bg-white"
+                            id="passwordToggle"
+                            onClick={() => setShowPassword(!showPassword)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            {showPassword ? <i className="fa-solid fa-eye" ></i> : <i className="fa-solid fa-eye-slash" ></i>}
+
+                          </span>
+                        </div>
                       </div>
                       <div className="row mb-3">
                         <div className="col-sm">
-                          <div className="form-check form-check-inline">
+                          <div className="form-check form-check-inline" style={{marginRight:'1px'}}>
                             <input className="form-check-input" id="remember-me" name="remember" type="checkbox" />
                             <label className="form-check-label" htmlFor="remember-me">Remember Me</label>
                           </div>
                         </div>
-                        <div className="col-sm text-end"><a className="btn-link" href="#">Forgot Password ?</a></div>
-                      </div>
-                      <Link to="/dashboard">
-                      <div className="d-grid mb-3">
-                            <button  className="btn btn-primary" type="submit">Login</button>
+                        <div className="col-sm text-end">
+                          {/* <a
+                            className={
+                              isLoading ? "disabled-anything " : "btn-link"
+                            }
+                            href="#"
+                          >
+                            Forgot Password ?
+                          </a> */}
                         </div>
-                        </Link>
+                        <div className="col-sm text-end"><Link className="btn-link" to="/forgot-password" >Forgot Password ?</Link></div>
+                      </div>
+                      {/* <Link to="/dashboard"> */}
+                      <div className="d-grid mb-3">
+                        <button
+                          onClick={(e) => handleSubmit(e)}
+                          className="btn btn-primary" type="submit"> {isLoading ? <Spinner /> : "Login"}</button>
+                      </div>
+                      {/* </Link> */}
                     </form>
-                    <p className="text-3 text-center text-muted">Don't have an account? <Link  className="btn-link" to="/signup">Sign Up</Link></p>
-                    
+                    <p className="text-3 text-center text-muted">Don't have an account? <Link
+
+                      className={
+                        isLoading ? "disabled-anything" : "btn-link"
+                      } to="/signup">Sign Up</Link></p>
+
                   </div>
                 </div>
               </div>
