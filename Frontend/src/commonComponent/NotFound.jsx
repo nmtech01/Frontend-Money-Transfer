@@ -3,9 +3,9 @@ import notFoundImage from '../assets/images/noDataFound.png'; // Import your ima
 
 const NotFound = () => {
   return (
-    <div className="transaction-list d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-      <div className="transaction-item px-4 py-3 text-center">
-        <img src={notFoundImage} alt="Not Found" style={{ maxWidth: '80%', marginBottom: '20px', }} />
+    <div className="bg-white transaction-list d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
+      <div className="bd-white transaction-item px-2 py-3 text-center">
+        <img src={notFoundImage} alt="Not Found" style={{ maxWidth: '40%', marginBottom: '90px', }} />
         {/* <p>No transaction found.</p> */}
       </div>
     </div>

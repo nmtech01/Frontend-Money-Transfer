@@ -144,7 +144,7 @@ const index = ({pofile}) => {
                                              
                                                 
                                                 
-                                              ( userData?.profile_pic??"/src/assets/images/profile_placeholder.png")} alt="" />
+                                              ( userData?.profile_pic ==""?"/src/assets/images/profile_placeholder.png":userData?.profile_pic)} alt="" />
                                         </a>
                                        <ul className={`dropdown-menu ${isProfileOpen ? 'show' : ''}`} style={{ position:"absolute",right:10 }}>
                                         

@@ -118,7 +118,7 @@ function index() {
                       </div>
                       <div className="row mb-3">
                         <div className="col-sm">
-                          <div className="form-check form-check-inline">
+                          <div className="form-check form-check-inline" style={{marginRight:'1px'}}>
                             <input className="form-check-input" id="remember-me" name="remember" type="checkbox" />
                             <label className="form-check-label" htmlFor="remember-me">Remember Me</label>
                           </div>

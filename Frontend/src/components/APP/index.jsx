@@ -10,7 +10,7 @@ import { requestMoneyApi } from "../../services/transactionService";
 import FullScreenLoader from "../../commonComponent/FullScreenLoader";
 import ConfirmationModal from "../../commonComponent/ConfirmationModal";
 import { digits } from "../../utilities/validators";
-import { isAmountValid } from "../../utilities/globalMethods";
+
 
 function index() {
   const navigate = useNavigate();
@@ -52,6 +52,34 @@ function index() {
     showModal();
   };
 
+
+
+
+  const calculateTotal = () => {
+    const total =
+      (parseInt(billets200) > 0 ? parseInt(billets200) * 200 : 0) +
+      (parseInt(billets100) > 0 ? parseInt(billets100) * 100 : 0) +
+      (parseInt(billets50) > 0 ? parseInt(billets50) * 50 : 0) +
+      (parseInt(pieces10) > 0 ? parseInt(pieces10) * 10 : 0) +
+      (parseInt(pieces5) > 0 ? parseInt(pieces5) * 5 : 0) +
+      (parseInt(pieces1) > 0 ? parseInt(pieces1) * 1 : 0);
+
+    return total;
+  };
+
+  const isAmountValid = () => {
+    const total = calculateTotal();
+    const parsedAmount = parseInt(amount); // Parse amount as integer
+
+    return !isNaN(parsedAmount) && total === parsedAmount; // Check if amount is a valid integer and equals total
+  };
+
+
+
+
+
+
+
   const onCancel = (e) => {
     e.preventDefault();
     navigate("/dashboard");
@@ -75,6 +103,11 @@ function index() {
   };
 
   const requestmoney = () => {
+    const authData = localStorage.getItem(
+      'user_data',
+    )
+    const AUTH_DATA = authData ? JSON.parse(authData) : null
+    var TOKEN = AUTH_DATA ? 'Token ' + AUTH_DATA?.token : null
     closeModal();
     setIsLoading(true);
     const param = {
@@ -85,10 +118,10 @@ function index() {
       pieces_10: pieces10 === "" ? 0 : parseInt(pieces10),
       pieces_5: pieces5 === "" ? 0 : parseInt(pieces5),
       pieces_1: pieces1 === "" ? 0 : parseInt(pieces1),
-      gab: isGab?1:0
+      gab: isGab ? 1 : 0
     };
 
-    requestMoneyApi(param)
+    requestMoneyApi(param, TOKEN)
       .then((resp) => {
         setIsLoading(false);
         if (resp?.data?.status === 200) {
@@ -123,7 +156,39 @@ function index() {
         <div id="content" className="py-4 gradient-bg">
           <div className="container">
             <div className="row">
-              <Aside />
+              <aside className="col-lg-3">
+
+
+                <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
+                  <h4 className="text-4 mb-3">AG  APP </h4>
+                  <hr></hr>
+                  <div className="accordion accordion-flush" id="accordionFlushExample">
+                    <div className="accordion-item">
+                      <h2 className="accordion-header" id="flush-headingOne">
+                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                          SAISI APP
+                        </button>
+                      </h2>
+                      <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                        <div className="accordion-body" >Agn</div>
+                        <div className="accordion-body" >Gab</div>
+                        <div className="accordion-body" >Validation</div>
+                      </div>
+                    </div>
+
+                    <div className="accordion-item">
+                      <h2 className="accordion-header" id="flush-headingThree">
+                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                          PLACEHOLDER
+                        </button>
+                      </h2>
+                    </div>
+                  </div>
+                </div>
+
+
+
+              </aside>
               <div className="col-lg-9">
                 <div className="bg-white shadow-sm rounded mb-4">
                   <h3 className="form-header-css text-5 fw-400 d-flex align-items-center  ">
@@ -310,37 +375,37 @@ function index() {
                             <table className="table">
                               <tbody>
                                 <tr>
-                             
-                                    <div className="row mb-3">
-                                      <div className="col-2">
-                                        <label
-                                          htmlFor="toggleGAB"
-                                          className="form-label"
-                                        >
-                                          10:
-                                        </label>
-                                      </div>
-                                      <div className="col-10">
-                                        <input
-                                          inputMode="numeric"
-                                          disabled={isGab}
-                                          value={pieces10}
-                                          onChange={(e) => {
-                                            const input = e.target.value;
-                                            const regex = digits;
-                                            if (
-                                              regex.test(input) ||
-                                              input === ""
-                                            ) {
-                                              setPieces10(input);
-                                            }
-                                          }}
-                                          className="form-control"
-                                          placeholder="0"
-                                        />
-                                      </div>
+
+                                  <div className="row mb-3">
+                                    <div className="col-2">
+                                      <label
+                                        htmlFor="toggleGAB"
+                                        className="form-label"
+                                      >
+                                        10:
+                                      </label>
                                     </div>
-                              
+                                    <div className="col-10">
+                                      <input
+                                        inputMode="numeric"
+                                        disabled={isGab}
+                                        value={pieces10}
+                                        onChange={(e) => {
+                                          const input = e.target.value;
+                                          const regex = digits;
+                                          if (
+                                            regex.test(input) ||
+                                            input === ""
+                                          ) {
+                                            setPieces10(input);
+                                          }
+                                        }}
+                                        className="form-control"
+                                        placeholder="0"
+                                      />
+                                    </div>
+                                  </div>
+
                                 </tr>
                                 <tr>
                                   <div className="row mb-3">

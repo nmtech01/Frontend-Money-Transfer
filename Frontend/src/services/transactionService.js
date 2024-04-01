@@ -7,7 +7,7 @@ const authData= localStorage.getItem(
 const AUTH_DATA=authData?JSON.parse(authData):null
 var TOKEN= AUTH_DATA ?'Token '+AUTH_DATA?.token:null
 
-export function requestMoneyApi(data) {
+export function requestMoneyApi(data,Token) {
 
   return new Promise((resolve, reject) =>
     axios
@@ -16,7 +16,7 @@ export function requestMoneyApi(data) {
       data,
       {
         headers: {
-          Authorization:TOKEN,
+          Authorization:Token??TOKEN,
         },
       }
       )
@@ -70,7 +70,7 @@ export function getTransactionDetailAPI(data) {
       })
   );
 }
-export function withdrawMoneyApi(data) {
+export function withdrawMoneyApi(data,Token) {
   return new Promise((resolve, reject) =>
     axios
     .post(
@@ -78,7 +78,7 @@ export function withdrawMoneyApi(data) {
       data,
       {
         headers: {
-          Authorization:TOKEN,
+          Authorization:Token??TOKEN,
         },
       }
       )

@@ -26,6 +26,7 @@ function index() {
   const [isLoading, setIsLoading] = useState(false);
   const [tDetailLoading, setTDetailLoading] = useState(false);
   const [transactionDetail, setTransactionDetail] = useState({});
+  const [userData, setUserData] = useState({});
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
@@ -35,7 +36,20 @@ function index() {
     const AUTH_DATA=authData?JSON.parse(authData):null
     var TOKEN= AUTH_DATA ?'Token '+AUTH_DATA?.token:null
     setIsLoading(true);
-    getUserProfileApi(TOKEN);
+
+    getUserProfileApi(TOKEN)
+    .then((resp) => {
+      setIsLoading(false);
+      if (resp?.data?.status == 200) {
+        setUserData(resp?.data?.data);
+      } else {
+        toastId.current = toast.error(resp?.data?.message);
+      }
+    })
+    .catch((error) => {
+      setIsLoading(false);
+      toastId.current = toast.error(error);
+    });
     getTransactionListAPI(TOKEN)
       .then((resp) => {
         setIsLoading(false);
@@ -90,7 +104,9 @@ function index() {
         <div id="content" className="py-4">
           <div className="container">
             <div className="row">
-              <Aside />
+              <Aside 
+              tottalAmount={userData?.total_requested}
+              />
               <div className="col-lg-9">
                 <nav
                   style={{
@@ -104,7 +120,7 @@ function index() {
                       <Link to="/dashboard">Home</Link>
                     </li>
                     <li className="breadcrumb-item active" aria-current="page">
-                      Money requests
+                      Dashboard
                     </li>
                   </ol>
                 </nav>
@@ -118,10 +134,38 @@ function index() {
                     </form>
                   </div>
                 </div>
-
-                <div className="custom-bg-gradient custom-shadow-border rounded mb-4">
-                  <div className="custom-header">
-                    <h3 className="custom-text-primary">All Transactions</h3>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginBottom: 20,
+                  }}
+                >
+                  <div
+                    className="onlineOrder"
+                    style={{
+                      cursor: "pointer",
+                      background: "linear-gradient(to right, #000428, #004e92)",
+                      marginRight: "20px",
+                    }}
+                  >
+                    <h4 className="loginMain">Money Requested</h4>
+                    <button className="OrderBtn">$6300</button>
+                  </div>
+                  <div
+                    className="onlineOrder"
+                    style={{
+                      cursor: "pointer",
+                      background: "linear-gradient(to right, #000428, #004e92)",
+                    }}
+                  >
+                    <h4 className="loginMain">Money Collected</h4>
+                    <button className="OrderBtn">$300</button>
+                  </div>
+                </div>
+                <div className="bg-white custom-shadow-border rounded mb-4">
+                  <div className="bg-white text-primary custom-header">
+                    <h3 className="text-primary">All Transactions</h3>
                   </div>
 
                   <div className="transaction-title py-2 px-4 custom-solid-border">
@@ -150,7 +194,7 @@ function index() {
                           const { id, created_at, type_id, amount } =
                             transaction;
                           return (
-                            <div key={id} className="transaction-list">
+                            <div key={id} className="bg-white  transaction-list">
                               <div
                               style={{pointerEvents:'none'}}
                                 className="transaction-item px-4 py-3"

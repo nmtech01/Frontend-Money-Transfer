@@ -20,15 +20,17 @@ function index() {
   const [selectedDate, setSelectedDate] = useState(
     moment().format("YYYY-MM-DD")
   );
+
+  console.log("selectedDateselectedDateselectedDate", selectedDate)
   useEffect(() => {
 
     const authdata = localStorage.getItem('user_data')
     if (authdata) {
-        const user = JSON.parse(authdata)
-     
-        setuserData(user)
+      const user = JSON.parse(authdata)
+
+      setuserData(user)
     }
-}, [])
+  }, [])
   const [isLoading, setIsLoading] = useState(false);
 
   const onChange = (date, dateString) => {
@@ -59,23 +61,28 @@ function index() {
       }
       return;
     }
-    if (amount >userData?.total_requested) {
-        if (!toast.isActive(toastId.current)) {
-          toastId.current = toast.error("Amount should not be greater then available balance");
-        }
-        return;
+    if (amount > userData?.total_requested) {
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.error("Amount should not be greater then available balance");
       }
+      return;
+    }
     showModal();
   };
 
   const withdrawMoney = () => {
+    const authData = localStorage.getItem(
+      'user_data',
+    )
+    const AUTH_DATA = authData ? JSON.parse(authData) : null
+    var TOKEN = AUTH_DATA ? 'Token ' + AUTH_DATA?.token : null
     closeModal();
     setIsLoading(true);
     const param = {
       amount: amount === "" ? 0 : parseInt(amount),
       date: selectedDate,
     };
-    withdrawMoneyApi(param)
+    withdrawMoneyApi(param, TOKEN)
       .then((resp) => {
         setIsLoading(false);
         if (resp?.data?.status == 200) {
@@ -108,7 +115,39 @@ function index() {
         <div id="content" className="py-4">
           <div className="container">
             <div className="row">
-              <Aside />
+              <aside className="col-lg-3">
+
+
+                <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
+                  <h4 className="text-4 mb-3">AG  APP </h4>
+                  <hr></hr>
+                  <div className="accordion accordion-flush" id="accordionFlushExample">
+                    <div className="accordion-item">
+                      <h2 className="accordion-header" id="flush-headingOne">
+                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                          SAISI COLL
+                        </button>
+                      </h2>
+                      <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                        <div className="accordion-body" >SAI COL</div>
+                        <div className="accordion-body" >SAI LIV</div>
+                        <div className="accordion-body" >PLACE HOLDER</div>
+                      </div>
+                    </div>
+
+                    <div className="accordion-item">
+                      <h2 className="accordion-header" id="flush-headingThree">
+                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                          PLACEHOLDER
+                        </button>
+                      </h2>
+                    </div>
+                  </div>
+                </div>
+
+
+
+              </aside>
               <div className="col-lg-9">
                 <nav
                   style={{
@@ -167,7 +206,7 @@ function index() {
                               inputMode="numeric"
                               onChange={(e) => {
                                 const input = e.target.value;
-                                const regex =digits;
+                                const regex = digits;
                                 if (regex.test(input) || input === "") {
                                   setAmount(input);
                                 }
@@ -188,7 +227,7 @@ function index() {
                             <div className="position-relative">
                               <Space direction="vertical">
                                 <DatePicker
-                                  defaultValue={moment()}
+                                  // defaultValue={moment()}
                                   format="YYYY-MM-DD"
                                   className="form-control"
                                   onChange={onChange}
@@ -230,7 +269,7 @@ function index() {
             </div>
           </div>
         </div>
-        {isLoading&&<FullScreenLoader/>}
+        {isLoading && <FullScreenLoader />}
 
         <Footer />
       </div>
