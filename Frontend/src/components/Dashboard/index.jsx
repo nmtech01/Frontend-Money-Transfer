@@ -30,26 +30,26 @@ function index() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
-    const authData= localStorage.getItem(
+    const authData = localStorage.getItem(
       'user_data',
     )
-    const AUTH_DATA=authData?JSON.parse(authData):null
-    var TOKEN= AUTH_DATA ?'Token '+AUTH_DATA?.token:null
+    const AUTH_DATA = authData ? JSON.parse(authData) : null
+    var TOKEN = AUTH_DATA ? 'Token ' + AUTH_DATA?.token : null
     setIsLoading(true);
 
     getUserProfileApi(TOKEN)
-    .then((resp) => {
-      setIsLoading(false);
-      if (resp?.data?.status == 200) {
-        setUserData(resp?.data?.data);
-      } else {
-        toastId.current = toast.error(resp?.data?.message);
-      }
-    })
-    .catch((error) => {
-      setIsLoading(false);
-      toastId.current = toast.error(error);
-    });
+      .then((resp) => {
+        setIsLoading(false);
+        if (resp?.data?.status == 200) {
+          setUserData(resp?.data?.data);
+        } else {
+          toastId.current = toast.error(resp?.data?.message);
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        toastId.current = toast.error(error);
+      });
     getTransactionListAPI(TOKEN)
       .then((resp) => {
         setIsLoading(false);
@@ -104,8 +104,8 @@ function index() {
         <div id="content" className="py-4">
           <div className="container">
             <div className="row">
-              <Aside 
-              tottalAmount={userData?.total_requested}
+              <Aside
+                tottalAmount={userData?.total_requested}
               />
               <div className="col-lg-9">
                 <nav
@@ -163,8 +163,8 @@ function index() {
                     <button className="OrderBtn">$300</button>
                   </div>
                 </div>
-                <div className="bg-white custom-shadow-border rounded mb-4">
-                  <div className="bg-white text-primary custom-header">
+                <div className="custom-shadow-border rounded mb-4">
+                  <div className="custom-header" style={{ background: '#ffffff' }}>
                     <h3 className="text-primary">All Transactions</h3>
                   </div>
 
@@ -173,15 +173,19 @@ function index() {
                       <div className="col-2 col-sm-1 text-center">
                         <span className="custom-text-primary">Date</span>
                       </div>
-                      <div className="col col-sm-6">
+                      <div className="col-4 col-sm-4">
                         <span className="custom-text-primary">Description</span>
                       </div>
-                      <div className="col-auto col-sm-2 text-center">
+                      <div className="col-2 col-sm-2 text-center">
                         <span className="custom-text-primary">Status</span>
                       </div>
-                      <div className="col-3 col-sm-3 text-end">
+                      <div className="col-2 col-sm-2 text-end">
                         <span className="custom-text-primary">Amount</span>
                       </div>
+                      <div className="col-2 col-sm-2 text-end">
+                        <span className="custom-text-primary">Action</span>
+                      </div>
+
                     </div>
                   </div>
 
@@ -196,10 +200,10 @@ function index() {
                           return (
                             <div key={id} className="bg-white  transaction-list">
                               <div
-                              style={{pointerEvents:'none'}}
+                                style={{ pointerEvents: 'none' }}
                                 className="transaction-item px-4 py-3"
                                 data-bs-target="#transaction-detail"
-                                // onClick={() => showTModal(id)}
+                              // onClick={() => showTModal(id)}
                               >
                                 <div className="row align-items-center flex-row">
                                   <div className="col-2 col-sm-1 text-center">
@@ -210,7 +214,7 @@ function index() {
                                       {moment(created_at).format("MMMM")}
                                     </span>
                                   </div>
-                                  <div className="col col-sm-6">
+                                  <div className="col-4 col-sm-4">
                                     <span className="d-block text-4">
                                       HDFC Bank
                                     </span>
@@ -218,7 +222,7 @@ function index() {
                                       Withdraw to Bank account
                                     </span>
                                   </div>
-                                  <div className="col-auto col-sm-2 text-center text-3">
+                                  <div className="col-2 col-sm-2 text-center text-3">
                                     {type_id === 0 ? (
                                       <span className="text-nowrap text-primary">
                                         <i className="fas fa-hourglass-start"></i>{" "}
@@ -232,12 +236,27 @@ function index() {
                                     )}
                                   </div>
 
-                                  <div className="col-3 col-sm-3 text-end text-4">
+                                  <div className="col-2 col-sm-2 text-end text-4">
                                     <span className="text-nowrap text-primary">
                                       ${amount}
                                     </span>
                                     <span className="text-2 text-uppercase text-warning">
                                       (USD)
+                                    </span>
+                                  </div>
+                                  <div className="col-2 col-sm-2 text-end text-3">
+                                    <span className="text-nowrap text-primary">
+                                      <a className="custom-icons" >
+                                        <i class="fa-solid fa-pencil"></i>
+                                      </a>
+
+                                    </span>
+                                    <span className="text-nowrap text-primary m-2">
+                                      
+                                      <a className="custom-icons" >
+                                        <i class="fa-solid fa-trash"></i>
+                                      </a>
+
                                     </span>
                                   </div>
                                 </div>
@@ -305,8 +324,8 @@ function index() {
                                         <div className="col">
                                           <div className="form-check form-switch d-flex align-items-center justify-content-center">
                                             <input
-                                              checked={transactionDetail?.gab==1?true:false }
-                                              onChange={(e)=>setCount(0)}
+                                              checked={transactionDetail?.gab == 1 ? true : false}
+                                              onChange={(e) => setCount(0)}
                                               className="form-check-input"
                                               type="checkbox"
                                               id="toggleGAB"
