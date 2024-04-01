@@ -1,30 +1,33 @@
 import React, { useState } from "react";
 import Header from "../Dashboard/DashboardHeader/index";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import Footer from "../Dashboard/DashboardFooter/index";
 import Aside from "../Dashboard/DashboardAside/index";
 import { Button, Modal } from "antd";
 import { toast } from "react-toastify";
 import Spinner from "../../commonComponent/Spinner";
-import { requestMoneyApi } from "../../services/transactionService";
+import { requestMoneyApi, updateTransactionApi } from "../../services/transactionService";
 import FullScreenLoader from "../../commonComponent/FullScreenLoader";
 import ConfirmationModal from "../../commonComponent/ConfirmationModal";
 import { digits } from "../../utilities/validators";
 import { calculateBillets, calculatePieces } from "../../utilities/globalMethods";
 
 
-function index() {
+function index(props) {
+ const data=localStorage.getItem('update_data')
+
+const UPDATE_DATA=  data ?JSON.parse(data):null
   const navigate = useNavigate();
   const toastId = React.useRef(null);
 
   const [visible, setVisible] = useState(false);
-  const [amount, setAmount] = useState("");
-  const [billets200, setBillets200] = useState("");
-  const [billets100, setBillets100] = useState("");
-  const [billets50, setBillets50] = useState("");
-  const [pieces10, setPieces10] = useState("");
-  const [pieces5, setPieces5] = useState("");
-  const [pieces1, setPieces1] = useState("");
+  const [amount, setAmount] = useState(UPDATE_DATA?.amount?? "");
+  const [billets200, setBillets200] = useState(UPDATE_DATA?.billets_200??"");
+  const [billets100, setBillets100] = useState(UPDATE_DATA?.billets_100??"");
+  const [billets50, setBillets50] = useState(UPDATE_DATA?.billets_50??"");
+  const [pieces10, setPieces10] = useState(UPDATE_DATA?.pieces_10??"");
+  const [pieces5, setPieces5] = useState(UPDATE_DATA?.pieces_5??"");
+  const [pieces1, setPieces1] = useState(UPDATE_DATA?.pieces_1??"");
   const [isGab, setIsGab] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [step2, setStep2] = useState(false);
@@ -78,6 +81,7 @@ function index() {
   };
   const onCancel = (e) => {
     e.preventDefault();
+    localStorage.removeItem('update_data')
     navigate("/dashboard");
   };
 
@@ -141,6 +145,48 @@ function index() {
       });
   };
 
+  const updateMoney = () => {
+    scrollToTop()
+    setStep2(true)
+    const authData = localStorage.getItem(
+      'user_data',
+    )
+    const AUTH_DATA = authData ? JSON.parse(authData) : null
+    var TOKEN = AUTH_DATA ? 'Token ' + AUTH_DATA?.token : null
+    closeModal();
+    setIsLoading(true);
+    const param = {
+      amount: amount === "" ? 0 : parseInt(amount),
+      billets_200: billets200 === "" ? 0 : parseInt(billets200),
+      billets_100: billets100 === "" ? 0 : parseInt(billets100),
+      billets_50: billets50 === "" ? 0 : parseInt(billets50),
+      pieces_10: pieces10 === "" ? 0 : parseInt(pieces10),
+      pieces_5: pieces5 === "" ? 0 : parseInt(pieces5),
+      pieces_1: pieces1 === "" ? 0 : parseInt(pieces1),
+      gab: isGab ? 1 : 0,
+      id:UPDATE_DATA?.id
+    };
+
+    updateTransactionApi(param, TOKEN)
+      .then((resp) => {
+        setStep3(true)
+        setIsLoading(false);
+        if (resp?.data?.status === 200) {
+          localStorage.removeItem('update_data')
+          toastId.current = toast.success(resp?.data?.message);
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 400);
+        } else {
+          toastId.current = toast.error(resp?.data?.message);
+        }
+      })
+      .catch((error) => {
+        setStep3(false)
+        setIsLoading(false);
+        toastId.current = toast.error(error);
+      });
+  };
   return (
     <>
       <div id="main-wrapper">
@@ -149,7 +195,7 @@ function index() {
         <ConfirmationModal
           title="Confirm"
           visible={visible}
-          onOk={requestmoney}
+          onOk={()=>UPDATE_DATA!==null?updateMoney():   requestmoney()}
           onCancel={closeModal}
           okText="Yes"
           cancelText="No"
@@ -189,9 +235,6 @@ function index() {
                     </div>
                   </div>
                 </div>
-
-
-
               </aside>
               <div className="col-lg-9">
                 <div className="bg-white shadow-sm rounded mb-4">
@@ -561,7 +604,7 @@ function index() {
                                 onClick={(e) => handleSubmit(e)}
                                 className="btn btn-primary"
                               >
-                                Next
+                              {UPDATE_DATA !==null ? 'Update':'Next'}  
                               </button>
                             </div>
                           </div>
