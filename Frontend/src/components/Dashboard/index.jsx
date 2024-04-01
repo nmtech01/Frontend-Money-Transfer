@@ -71,7 +71,6 @@ function index() {
     };
     getTransactionDetailAPI(param)
       .then((resp) => {
-        console.log("response", JSON.stringify(resp));
         setTDetailLoading(false);
         if (resp?.data?.status == 200) {
           setTransactionDetail(resp?.data?.data);
@@ -150,7 +149,7 @@ function index() {
                     }}
                   >
                     <h4 className="loginMain">Money Requested</h4>
-                    <button className="OrderBtn">$6300</button>
+                    <button className="OrderBtn">$ {userData?.totals?.total_amount??0}</button>
                   </div>
                   <div
                     className="onlineOrder"
@@ -160,11 +159,11 @@ function index() {
                     }}
                   >
                     <h4 className="loginMain">Money Collected</h4>
-                    <button className="OrderBtn">$300</button>
+                    <button className="OrderBtn">$ {userData?.totals?.withdraw_amount??0}</button>
                   </div>
                 </div>
                 <div className="bg-white custom-shadow-border rounded mb-4">
-                  <div className="bg-white text-primary custom-header">
+                  <div className="bg-white ">
                     <h3 className="text-primary">All Transactions</h3>
                   </div>
 

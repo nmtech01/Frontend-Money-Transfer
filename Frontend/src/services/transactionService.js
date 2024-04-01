@@ -91,3 +91,48 @@ export function withdrawMoneyApi(data,Token) {
       })
   );
 }
+
+export function updateTransactionApi(data,Token) {
+  return new Promise((resolve, reject) =>
+    axios
+    .post(
+      `${BASE_URL}${TRANSACTIONS.updateTransaction}`,
+      data,
+      {
+        headers: {
+          Authorization:Token??TOKEN,
+        },
+      }
+      )
+      .then(function (response) {
+        resolve(response);
+      })
+      .catch(function (error) {
+        reject(error);
+        
+      })
+  );
+}
+
+
+export function deleteTransactionApi(data,Token) {
+  return new Promise((resolve, reject) =>
+    axios
+    .post(
+      `${BASE_URL}${TRANSACTIONS.deleteTransaction}`,
+      data,
+      {
+        headers: {
+          Authorization:Token??TOKEN,
+        },
+      }
+      )
+      .then(function (response) {
+        resolve(response);
+      })
+      .catch(function (error) {
+        reject(error);
+        
+      })
+  );
+}

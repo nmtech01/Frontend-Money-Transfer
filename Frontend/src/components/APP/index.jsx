@@ -10,6 +10,7 @@ import { requestMoneyApi } from "../../services/transactionService";
 import FullScreenLoader from "../../commonComponent/FullScreenLoader";
 import ConfirmationModal from "../../commonComponent/ConfirmationModal";
 import { digits } from "../../utilities/validators";
+import { calculateBillets, calculatePieces } from "../../utilities/globalMethods";
 
 
 function index() {
@@ -26,6 +27,8 @@ function index() {
   const [pieces1, setPieces1] = useState("");
   const [isGab, setIsGab] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [step2, setStep2] = useState(false);
+  const [step3, setStep3] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -73,13 +76,6 @@ function index() {
 
     return !isNaN(parsedAmount) && total === parsedAmount; // Check if amount is a valid integer and equals total
   };
-
-
-
-
-
-
-
   const onCancel = (e) => {
     e.preventDefault();
     navigate("/dashboard");
@@ -101,8 +97,12 @@ function index() {
   const closeModal = () => {
     setVisible(false);
   };
-
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   const requestmoney = () => {
+    scrollToTop()
+    setStep2(true)
     const authData = localStorage.getItem(
       'user_data',
     )
@@ -123,15 +123,19 @@ function index() {
 
     requestMoneyApi(param, TOKEN)
       .then((resp) => {
+        setStep3(true)
         setIsLoading(false);
         if (resp?.data?.status === 200) {
           toastId.current = toast.success(resp?.data?.message);
-          navigate("/dashboard");
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 400);
         } else {
           toastId.current = toast.error(resp?.data?.message);
         }
       })
       .catch((error) => {
+        setStep3(false)
         setIsLoading(false);
         toastId.current = toast.error(error);
       });
@@ -204,14 +208,14 @@ function index() {
                         </div>
                         <a href="#" className="step-dot"></a>{" "}
                       </div>
-                      <div className="col-4 step disabled">
+                      <div className={step2?"col-4 step active" : "col-4 step disabled"}>
                         <div className="step-name">Confirm</div>
                         <div className="progress">
                           <div className="progress-bar"></div>
                         </div>
                         <a href="#" className="step-dot"></a>{" "}
                       </div>
-                      <div className="col-4 step disabled">
+                      <div className={step3?"col-4 step active" : "col-4 step disabled"}>
                         <div className="step-name">Success</div>
                         <div className="progress">
                           <div className="progress-bar"></div>
@@ -494,9 +498,11 @@ function index() {
                                             <input
                                               disabled
                                               value={
-                                                (parseInt(billets100) || 0) +
-                                                (parseInt(billets200) || 0) +
-                                                (parseInt(billets50) || 0)
+                                              calculateBillets(billets200,billets100,billets50)
+
+                                                // (parseInt(billets100) || 0) +
+                                                // (parseInt(billets200) || 0) +
+                                                // (parseInt(billets50) || 0)
                                               }
                                               className="form-control"
                                               placeholder=""
@@ -521,9 +527,10 @@ function index() {
                                           <input
                                             disabled
                                             value={
-                                              (parseInt(pieces1) || 0) +
-                                              (parseInt(pieces10) || 0) +
-                                              (parseInt(pieces5) || 0)
+                                              calculatePieces(pieces10,pieces5,pieces1)
+                                              // (parseInt(pieces1) || 0) +
+                                              // (parseInt(pieces10) || 0) +
+                                              // (parseInt(pieces5) || 0)
                                             }
                                             className="form-control"
                                             placeholder="0"
