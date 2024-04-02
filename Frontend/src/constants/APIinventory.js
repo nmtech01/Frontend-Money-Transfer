@@ -1,4 +1,4 @@
-export const BASE_URL = "http://44.206.90.142:8000";
+export const BASE_URL = "http://127.0.0.1:8000";
 
 export const AUTH = {
   login: "/api/login/",
@@ -15,5 +15,7 @@ export const TRANSACTIONS={
    requestMoney:'/api/money-request/',
    transactionList:'/api/money-request-list/',
    withdrawMoney:'/api/withdraw-money-request/',
-  transactionDetail:'/api/transaction-detail/?id='
+   transactionDetail:'/api/transaction-detail/?id=',
+   deleteTransaction:'/api/transaction-delete/',
+   updateTransaction:'/api/transaction-update/'
 }

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Aside from "../Dashboard/DashboardAside/index";
 import { getUserProfileApi } from "../../services/authService";
 import {
+  deleteTransactionApi,
   getTransactionDetailAPI,
   getTransactionListAPI,
 } from "../../services/transactionService";
@@ -71,7 +72,6 @@ function index() {
     };
     getTransactionDetailAPI(param)
       .then((resp) => {
-        console.log("response", JSON.stringify(resp));
         setTDetailLoading(false);
         if (resp?.data?.status == 200) {
           setTransactionDetail(resp?.data?.data);
@@ -96,8 +96,38 @@ function index() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
-  return (
+  const onDelete=(e,item,index)=>{
+    const authData = localStorage.getItem(
+      'user_data',
+    )
+    const AUTH_DATA = authData ? JSON.parse(authData) : null
+    var TOKEN = AUTH_DATA ? 'Token ' + AUTH_DATA?.token : null
+    setTDetailLoading(true);
+    const param = {
+      id: item?.id,
+    };
+    deleteTransactionApi(param,TOKEN)
+      .then((resp) => {
+        setTDetailLoading(false)
+        if (resp?.data?.status == 200) {
+          const lis=transactionList
+          lis.splice(index,1)
+          setTransactionDetail(lis);
+        } else {
+          toastId.current = toast.error(resp?.data?.message);
+        }
+      })
+      .catch((error) => {
+        setTDetailLoading(false);
+        toastId.current = toast.error(error);
+        setIsModalOpen(false);
+      });
+  }
+  const onUpdate=(e,item,index)=>{
+  localStorage.setItem("update_data",JSON.stringify(item))
+   navigate('/app-form',{data:item})
+  }
+  return ( 
     <>
       <div id="main-wrapper">
         <Header />
@@ -150,7 +180,7 @@ function index() {
                     }}
                   >
                     <h4 className="loginMain">Money Requested</h4>
-                    <button className="OrderBtn">$6300</button>
+                    <button className="OrderBtn">$ {userData?.totals?.total_amount??0}</button>
                   </div>
                   <div
                     className="onlineOrder"
@@ -160,7 +190,7 @@ function index() {
                     }}
                   >
                     <h4 className="loginMain">Money Collected</h4>
-                    <button className="OrderBtn">$300</button>
+                    <button className="OrderBtn">$ {userData?.totals?.withdraw_amount??0}</button>
                   </div>
                 </div>
                 <div className="custom-shadow-border rounded mb-4">
@@ -194,13 +224,13 @@ function index() {
                   ) : (
                     <>
                       {transactionList.length > 0 ? (
-                        transactionList.map((transaction) => {
+                        transactionList.map((transaction,index) => {
                           const { id, created_at, type_id, amount } =
                             transaction;
                           return (
                             <div key={id} className="bg-white  transaction-list">
                               <div
-                                style={{ pointerEvents: 'none' }}
+                                
                                 className="transaction-item px-4 py-3"
                                 data-bs-target="#transaction-detail"
                               // onClick={() => showTModal(id)}
@@ -245,15 +275,24 @@ function index() {
                                     </span>
                                   </div>
                                   <div className="col-2 col-sm-2 text-end text-3">
-                                    <span className="text-nowrap text-primary">
-                                      <a className="custom-icons" >
+                                    <span 
+                                
+                                    className="text-nowrap text-primary">
+                                      <a 
+                                      onClick={(e)=>{onUpdate(e,transaction,index)}}
+                                      className="custom-icons" >
                                         <i class="fa-solid fa-pencil"></i>
                                       </a>
 
                                     </span>
-                                    <span className="text-nowrap text-primary m-2">
+                                    <span 
+                                    
+                                    
+                                    className="text-nowrap text-primary m-2">
                                       
-                                      <a className="custom-icons" >
+                                      <a 
+                                       onClick={(e)=>{onDelete(e,transaction,index)}}
+                                      className="custom-icons" >
                                         <i class="fa-solid fa-trash"></i>
                                       </a>
 
