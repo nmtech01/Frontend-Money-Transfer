@@ -24,7 +24,7 @@ const index = ({tottalAmount}) => {
             labels: ['Collected', 'Requested', 'Remaining'],
             datasets: [{
                 data: [300, 200, 100],
-                backgroundColor: ['#040126', '#6B66FF', '#fab005'], // Custom colors
+                backgroundColor: ['#040126', '#6B66FF', '#B79600'], // Custom colors
                 hoverOffset: 20, // Add some hover effect
                 borderWidth: 5, // Remove border
             }]

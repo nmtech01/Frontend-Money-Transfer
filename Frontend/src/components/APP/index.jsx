@@ -35,6 +35,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (amount === "") {
       if (!toast.isActive(toastId.current)) {
         toastId.current = toast.error("Please enter amount");
@@ -55,7 +56,14 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
       }
       return;
     }
-    showModal();
+    if(step2){
+      showModal();
+
+    }
+    else{
+      scrollToTop()
+      setStep2(true)
+    }
   };
 
 
@@ -81,8 +89,13 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
   };
   const onCancel = (e) => {
     e.preventDefault();
+    if(step2){
+      setStep2(false)
+    }
+   else{
     localStorage.removeItem('update_data')
     navigate("/dashboard");
+   }
   };
 
   const onToggleGab = (value) => {
@@ -276,6 +289,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
                           </div>
                           <div className="col-9 h-1">
                             <input
+                            disabled={step2}
                               inputMode="numeric"
                               value={amount}
                               onChange={(e) => {
@@ -336,6 +350,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
                                     </div>
                                     <div className="col-10">
                                       <input
+                                       disabled={step2}
                                         value={billets200}
                                         inputMode="numeric"
                                         onChange={(e) => {
@@ -366,6 +381,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
                                     </div>
                                     <div className="col-10">
                                       <input
+                                       disabled={step2}
                                         value={billets100}
                                         inputMode="numeric"
                                         onChange={(e) => {
@@ -396,6 +412,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
                                     </div>
                                     <div className="col-10">
                                       <input
+                                       disabled={step2}
                                         inputMode="numeric"
                                         value={billets50}
                                         onChange={(e) => {
@@ -435,7 +452,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
                                     <div className="col-10">
                                       <input
                                         inputMode="numeric"
-                                        disabled={isGab}
+                                        disabled={isGab ||step2}
                                         value={pieces10}
                                         onChange={(e) => {
                                           const input = e.target.value;
@@ -466,7 +483,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
                                     </div>
                                     <div className="col-10">
                                       <input
-                                        disabled={isGab}
+                                        disabled={isGab ||step2}
                                         inputMode="numeric"
                                         value={pieces5}
                                         onChange={(e) => {
@@ -497,7 +514,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
                                     </div>
                                     <div className="col-10">
                                       <input
-                                        disabled={isGab}
+                                       disabled={isGab ||step2}
                                         inputMode="numeric"
                                         value={pieces1}
                                         onChange={(e) => {
@@ -594,7 +611,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
                                 onClick={(e) => onCancel(e)}
                                 className="btn btn-secondary"
                               >
-                                Cancel
+                                {step2?'Back':'Cancel'}
                               </button>
                             </div>
                           </div>
@@ -604,7 +621,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
                                 onClick={(e) => handleSubmit(e)}
                                 className="btn btn-primary"
                               >
-                              {UPDATE_DATA !==null ? 'Update':'Next'}  
+                              {UPDATE_DATA !==null ? 'Update':step2?"Confirm":"Next"}  
                               </button>
                             </div>
                           </div>
