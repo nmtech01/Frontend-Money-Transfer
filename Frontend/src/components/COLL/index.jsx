@@ -5,18 +5,21 @@ import Footer from "../Dashboard/DashboardFooter/index";
 import Aside from "../Dashboard/DashboardAside/index";
 import { Button, DatePicker, Modal, Space } from "antd";
 import { toast } from "react-toastify";
-import { withdrawMoneyApi } from "../../services/transactionService";
+import { updateTransactionApi, withdrawMoneyApi } from "../../services/transactionService";
 import ConfirmationModal from "../../commonComponent/ConfirmationModal";
 import moment from "moment";
 import { digits } from "../../utilities/validators";
 import FullScreenLoader from "../../commonComponent/FullScreenLoader";
 
 function index() {
+  const data=localStorage.getItem('update_data')
+  const UPDATE_DATA=  data ?JSON.parse(data):null;
+  console.log("Dd",UPDATE_DATA)
   const navigate = useNavigate();
   const toastId = React.useRef(null);
   const [visible, setVisible] = useState(false);
   const [userData, setuserData] = useState(null);
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(UPDATE_DATA?.amount??"");
   const [selectedDate, setSelectedDate] = useState(
     moment().format("YYYY-MM-DD")
   );
@@ -97,6 +100,44 @@ function index() {
         toastId.current = toast.error(error);
       });
   };
+
+  const updateMoney = () => {
+    const authData = localStorage.getItem(
+      'user_data',
+    )
+    const AUTH_DATA = authData ? JSON.parse(authData) : null
+    var TOKEN = AUTH_DATA ? 'Token ' + AUTH_DATA?.token : null
+    closeModal();
+    setIsLoading(true);
+    const param = {
+      amount: amount === "" ? 0 : parseInt(amount),
+      date: selectedDate,
+      id:UPDATE_DATA?.id
+    };
+    updateTransactionApi(param, TOKEN)
+      .then((resp) => {  
+        setIsLoading(false);
+        if (resp?.data?.status === 200) {
+          try {
+            localStorage.removeItem('update_data');
+            console.log('Item removed successfully');
+        } catch (error) {
+            console.error('Error removing item:', error);
+        }
+          toastId.current = toast.success(resp?.data?.message);
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 400);
+        } else {
+          toastId.current = toast.error(resp?.data?.message);
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        toastId.current = toast.error(error);
+      });
+  };
+
   return (
     <>
       <div id="main-wrapper">
@@ -104,7 +145,7 @@ function index() {
         <ConfirmationModal
           title="Confirm"
           visible={visible}
-          onOk={withdrawMoney}
+          onOk={()=>UPDATE_DATA!==null?updateMoney(): withdrawMoney()}
           onCancel={closeModal}
           okText="Yes"
           cancelText="No"
@@ -119,7 +160,7 @@ function index() {
 
 
                 <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
-                  <h4 className="text-4 mb-3">AG  APP </h4>
+                  <h4 className="text-4 mb-3">AG - COLL </h4>
                   <hr></hr>
                   <div className="accordion accordion-flush" id="accordionFlushExample">
                     <div className="accordion-item">
@@ -129,9 +170,9 @@ function index() {
                         </button>
                       </h2>
                       <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <div className="accordion-body" >SAI COL</div>
-                        <div className="accordion-body" >SAI LIV</div>
-                        <div className="accordion-body" >PLACE HOLDER</div>
+                        <div className="accordion-body" style={{marginLeft:"-150px"}}>SAI COL</div>
+                        <div className="accordion-body" style={{marginLeft:"-155px"}}>SAI LIV</div>
+                        <div className="accordion-body" style={{marginLeft:"-95px"}}>PLACE HOLDER</div>
                       </div>
                     </div>
 
@@ -185,7 +226,7 @@ function index() {
                           <div className="col-9 h-1">
                             <input
                               type="text"
-                              value={userData?.total_requested}
+                              value={'1000'}
                               className="form-control"
                               id="amount"
                               required
@@ -256,7 +297,7 @@ function index() {
                                 onClick={(e) => handleSubmit(e)}
                                 className="btn btn-primary"
                               >
-                                Next
+                               {UPDATE_DATA!==null?'Update':'Next'} 
                               </button>
                             </div>
                           </div>

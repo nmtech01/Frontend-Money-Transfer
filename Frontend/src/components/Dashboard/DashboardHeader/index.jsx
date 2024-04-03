@@ -45,6 +45,7 @@ const index = ({pofile}) => {
         const authdata=localStorage.getItem('user_data')
         if(authdata){
             setuserData(JSON.parse(authdata))
+            localStorage.removeItem('update_data')
         }
 
     },[pofile])
@@ -104,7 +105,7 @@ const index = ({pofile}) => {
                                             </a>
                                             <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`} style={{ left: '-50%', minWidth: '140px' }}>
                                                 <li onClick={handleDropdownClose}><Link className="dropdown-item " to="/collect-money">COLL</Link></li>
-                                                <li onClick={handleDropdownClose}><Link className="dropdown-item " to="/app-form">APP</Link></li>
+                                                <li onClick={handleDropdownClose}><Link className="dropdown-item " to="/app-form">APPL</Link></li>
                                                 <li onClick={handleDropdownClose}><Link className="dropdown-item " href="#">CONS</Link></li>
 
                                             </ul>
@@ -119,22 +120,6 @@ const index = ({pofile}) => {
                         <div className="header-column justify-content-end">
                             <nav className="login-signup navbar navbar-expand">
                                 <ul className="navbar-nav">
-
-                                    <li className="dropdown notifications" onMouseEnter={() => handleNotificationsHover(true)} onMouseLeave={() => handleNotificationsHover(false)}>
-                                        <a className="dropdown-toggle" href="#">
-                                            <span className="text-5"><i className="far fa-bell"></i></span>
-                                            <span className="count">3</span>
-                                        </a>
-                                        <ul className={`dropdown-menu ${isNotificationsOpen ? 'show' : ''}`} style={{ left: '-450%' }}>
-                                            <li className="text-center text-3 py-2">Notifications (3)</li>
-                                            <li className="dropdown-divider mx-n3"></li>
-                                            <li><a className="dropdown-item" href="#"><i className="fas fa-bell"></i>A new digital FIRC document is available for you to download<span className="text-1 text-muted d-block">22 Jul 2021</span></a></li>
-                                            <li><a className="dropdown-item" href="#"><i className="fas fa-bell"></i>Updates to our privacy policy. Please read.<span className="text-1 text-muted d-block">04 March 2021</span></a></li>
-                                            <li><a className="dropdown-item" href="#"><i className="fas fa-bell"></i>Update about fees<span className="text-1 text-muted d-block">18 Feb 2021</span></a></li>
-                                            <li className="dropdown-divider mx-n3"></li>
-                                            <li><a className="dropdown-item text-center text-primary px-0" href="#">See all Notifications</a></li>
-                                        </ul>
-                                    </li>
 
                                     <li className="dropdown profile ms-2" onMouseEnter={() => handleProfileHover(true)} onMouseLeave={() => handleProfileHover(false)}>
                                         <a className="px-0 dropdown-toggle" href="#">
