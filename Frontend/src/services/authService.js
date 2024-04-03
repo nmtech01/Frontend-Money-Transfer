@@ -173,3 +173,24 @@ export function logoutApi(data) {
   );
 }
 
+export function getGraphApi(data) {
+  return new Promise((resolve, reject) =>
+    axios
+      .get(
+        `${BASE_URL}${AUTH.graphApi}`,
+        {
+          headers: {
+            Authorization:data??TOKEN,
+          },
+        }
+      )
+      .then(function (response) {
+        resolve(response);
+      })
+      .catch(function (error) {
+        reject(error);
+        
+      })
+  );
+}
+
