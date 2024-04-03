@@ -64,9 +64,9 @@ function index() {
       }
       return;
     }
-    if (amount >= userData?.total_requested) {
+    if (amount<userData?.totals?.withdraw_amount) {
       if (!toast.isActive(toastId.current)) {
-        toastId.current = toast.error("Amount should not be greater then available balance");
+        toastId.current = toast.error("Amount should be greater then available balance");
       }
       return;
     }
