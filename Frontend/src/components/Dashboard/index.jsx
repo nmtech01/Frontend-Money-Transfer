@@ -110,6 +110,7 @@ function index() {
       .then((resp) => {
         setTDetailLoading(false)
         if (resp?.data?.status == 200) {
+          toastId.current = toast.error(resp?.data?.message);
           const lis=transactionList
           lis.splice(index,1)
           setTransactionDetail(lis);
@@ -124,8 +125,9 @@ function index() {
       });
   }
   const onUpdate=(e,item,index)=>{
-  localStorage.setItem("update_data",JSON.stringify(item))
-   navigate('/app-form',{data:item})
+   localStorage.setItem("update_data",JSON.stringify(item))
+
+   navigate( item?.type_id==0?  '/app-form':'/collect-money',{data:item})
   }
   return ( 
     <>

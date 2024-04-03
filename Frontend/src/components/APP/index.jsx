@@ -210,19 +210,19 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
 
 
                 <div className="bg-white shadow-sm rounded text-center p-3 mb-4">
-                  <h4 className="text-4 mb-3">AG  APP </h4>
+                  <h4 className="text-4 mb-3">AG - APPL </h4>
                   <hr></hr>
                   <div className="accordion accordion-flush" id="accordionFlushExample">
                     <div className="accordion-item">
                       <h2 className="accordion-header" id="flush-headingOne">
                         <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                          SAISI APP
+                          SAISI APPL
                         </button>
                       </h2>
                       <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <div className="accordion-body" >Agn</div>
-                        <div className="accordion-body" >Gab</div>
-                        <div className="accordion-body" >Validation</div>
+                        <div className="accordion-body" style={{marginLeft:"-180px"}} >Agn</div>
+                        <div className="accordion-body" style={{marginLeft:"-180px"}}>Gab</div>
+                        <div className="accordion-body" style={{marginLeft:"-145px"}}>Validation</div>
                       </div>
                     </div>
 

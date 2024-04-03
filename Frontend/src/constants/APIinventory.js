@@ -1,4 +1,4 @@
-export const BASE_URL = "http://127.0.0.1:8000";
+export const BASE_URL = "http://192.168.29.22:8000";
 
 export const AUTH = {
   login: "/api/login/",
@@ -8,7 +8,8 @@ export const AUTH = {
   logout:'/api/logout/',
   changePassword:'/api/change-password/',
   forgotPassword:'/api/forgot-password/',
-  resetPassword:'/api/reset-password/'
+  resetPassword:'/api/reset-password/',
+  graphApi:'/api/pie-chart/'
 };
 
 export const TRANSACTIONS={
