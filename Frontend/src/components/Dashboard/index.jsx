@@ -19,6 +19,7 @@ import {
   calculateBillets,
   calculatePieces,
 } from "../../utilities/globalMethods";
+import ConfirmationModal from "../../commonComponent/ConfirmationModal";
 function index() {
   const navigate = useNavigate();
   const toastId = React.useRef(null);
@@ -28,6 +29,8 @@ function index() {
   const [tDetailLoading, setTDetailLoading] = useState(false);
   const [transactionDetail, setTransactionDetail] = useState({});
   const [userData, setUserData] = useState({});
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
@@ -96,7 +99,8 @@ function index() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const onDelete=(e,item,index)=>{
+  const onDelete=(item,index)=>{
+    closeModal()
     const authData = localStorage.getItem(
       'user_data',
     )
@@ -129,10 +133,24 @@ function index() {
 
    navigate( item?.type_id==0?  '/app-form':'/collect-money',{data:item})
   }
+  const closeModal = () => {
+    setSelectedItem({})
+    setConfirmModal(false);
+  };
   return ( 
     <>
       <div id="main-wrapper">
         <Header />
+        <ConfirmationModal
+          title="Confirm"
+          visible={confirmModal}
+          onOk={()=>onDelete(selectedItem?.transaction,selectedItem?.index)}
+          onCancel={closeModal}
+          okText="Yes"
+          cancelText="No"
+        >
+          <p>Are you sure you want to delete this transaction?</p>
+        </ConfirmationModal>
         <div id="content" className="py-4">
           <div className="container">
             <div className="row">
@@ -293,7 +311,12 @@ function index() {
                                     className="text-nowrap text-primary m-2">
                                       
                                       <a 
-                                       onClick={(e)=>{onDelete(e,transaction,index)}}
+                                       onClick={(e)=>{
+                                        setSelectedItem({
+                                          transaction:transaction,index:index
+                                        }),setConfirmModal(true)
+
+                                       }}
                                       className="custom-icons" >
                                         <i class="fa-solid fa-trash"></i>
                                       </a>

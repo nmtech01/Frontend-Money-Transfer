@@ -1,6 +1,6 @@
 /* Custom Header Styling */
 .custom-header {
-  background: linear-gradient(to right, #000428, #004e92); /* Gradient background */
+  background: linear-gradient(to right, #020B20,#020B20); /* Gradient background */
   color: #ffffff; /* White text color */
   padding: 20px;
   font-family: 'Arial', sans-serif;
@@ -21,7 +21,7 @@
 
 /* Custom Border */
 .custom-solid-border {
-  border-top: 0.1px solid #fab005; /* Matching border color */
+  border-top: 0.1px solid #B79600; /* Matching border color */
 }
 
 /* Custom Text Color */

@@ -130,7 +130,7 @@ a:focus {
 
 a:hover,
 a:active {
-  color: #fab005;
+  color: #B79600;
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
@@ -4033,7 +4033,7 @@ a.text-primary:hover,
 .btn-link:hover,
 .link-primary:hover,
 .link-primary:focus {
-  color: #fab005 !important;
+  color: #B79600 !important;
 }
 
 .text-secondary {
@@ -4056,7 +4056,7 @@ a.bg-primary:focus,
 a.bg-primary:hover,
 button.bg-primary:focus,
 button.bg-primary:hover {
-  background-color: #fab005 !important;
+  background-color: #B79600 !important;
 }
 
 .border-primary {
@@ -4073,14 +4073,14 @@ button.bg-primary:hover {
 }
 
 .btn-primary:hover {
-  background-color: #fab005;
-  border-color: #fab005;
+  background-color: #B79600;
+  border-color: #B79600;
 }
 
 .btn-primary:not(:disabled):not(.disabled).active,
 .btn-primary:not(:disabled):not(.disabled):active {
-  background-color: #fab005;
-  border-color: #fab005;
+  background-color: #B79600;
+  border-color: #B79600;
 }
 
 .btn-primary:not(:disabled):not(.disabled).active:hover,
@@ -4091,8 +4091,8 @@ button.bg-primary:hover {
 
 .btn-primary.focus,
 .btn-primary:focus {
-  background-color: #fab005;
-  border-color: #fab005;
+  background-color: #B79600;
+  border-color: #B79600;
 }
 
 .btn-primary:not(:disabled):not(.disabled).active:focus,
@@ -4163,7 +4163,7 @@ button.bg-primary:hover {
 }
 
 .page-link:hover {
-  color: #fab005;
+  color: #B79600;
 }
 
 /* Pagination */
@@ -4402,7 +4402,7 @@ button.bg-primary:hover {
 }
 
 #styles-switcher ul li.yellow {
-  background: #ffc107;
+  background: #B79600;
 }
 
 #styles-switcher ul li.pink {

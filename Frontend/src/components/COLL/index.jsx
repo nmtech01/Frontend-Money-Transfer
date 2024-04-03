@@ -64,7 +64,7 @@ function index() {
       }
       return;
     }
-    if (amount > userData?.total_requested) {
+    if (amount >= userData?.total_requested) {
       if (!toast.isActive(toastId.current)) {
         toastId.current = toast.error("Amount should not be greater then available balance");
       }
@@ -226,7 +226,7 @@ function index() {
                           <div className="col-9 h-1">
                             <input
                               type="text"
-                              value={'1000'}
+                              value={userData?.totals?.withdraw_amount}
                               className="form-control"
                               id="amount"
                               required

@@ -10,7 +10,7 @@ const ConfirmationModal = ({ visible, onOk, onCancel, okText, cancelText, childr
       onCancel={onCancel}
       okText={okText}
       cancelText={cancelText}
-      okButtonProps={{ style: { backgroundColor: '#fab005', borderColor: '#fab005' } }}
+      okButtonProps={{ style: { backgroundColor: '#B79600', borderColor: '#B79600' } }}
       cancelButtonProps={{ type: 'default' }}
     >
       {children}

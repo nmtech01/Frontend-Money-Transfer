@@ -20,7 +20,7 @@ const FullScreenLoader = () => {
     >
       <span
         className="spinner-border inner-spinner spinner-border-sm"
-        style={{ color: "#ffc107", width: "2.5rem", height: "2.5rem" }}
+        style={{ color: "#B79600", width: "2.5rem", height: "2.5rem" }}
       ></span>
     </div>
   );

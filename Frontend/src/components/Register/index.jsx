@@ -136,8 +136,9 @@ function index() {
                                                     <input
                                                         value={password}
                                                         onChange={(e) => setPassword(e.target.value)}
-                                                        type="password" className="form-control" id="loginPassword"
+                                                         className="form-control" id="loginPassword"
                                                         // required 
+                                                        type={showPassword ? "text" : "password"}
                                                         placeholder="Enter Password" />
                                                     <span
                                                         className="input-group-text bg-white"
