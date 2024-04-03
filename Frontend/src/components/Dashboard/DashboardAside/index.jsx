@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
+import { getGraphApi } from "../../../services/authService.js";
+
 
 const index = ({tottalAmount}) => {
     const chartRef = useRef(null);
@@ -8,6 +10,8 @@ const index = ({tottalAmount}) => {
     const [email, setEmail] = useState('');
     const [profilePic, setProfilePic] = useState('');
     const [userData, setuserData] = useState(null);
+    const [graphData, setGraphData] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const authdata = localStorage.getItem('user_data')
@@ -19,12 +23,36 @@ const index = ({tottalAmount}) => {
             setProfilePic(user?.profile_pic)
             setuserData(user)
         }
+
+        const AUTH_DATA = authdata ? JSON.parse(authdata) : null
+        var TOKEN = AUTH_DATA ? 'Token ' + AUTH_DATA?.token : null
+
+        getGraphApi(TOKEN)
+
+            .then((resp) => {
+
+                setIsLoading(false);
+                if (resp?.data?.status == 200) {
+
+                    setGraphData(resp?.data?.data);
+                } else {
+                    toastId.current = toast.error(resp?.data?.message);
+                }
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                toastId.current = toast.error(error);
+            });
+
+
+
+
         // Mock data for the pie chart
         const data = {
-            labels: ['Collected', 'Requested', 'Remaining'],
+            labels: graphData.labels,
             datasets: [{
-                data: [300, 200, 100],
-                backgroundColor: ['#040126', '#6B66FF', '#B79600'], // Custom colors
+                data: graphData.value,
+                backgroundColor: ['#B79600', '#163454'], // Custom colors
                 hoverOffset: 20, // Add some hover effect
                 borderWidth: 5, // Remove border
             }]
@@ -73,6 +101,8 @@ const index = ({tottalAmount}) => {
             }
         };
     }, [tottalAmount]);
+
+    console.log(graphData.value,">>>>>>>>")
     return (
 
         <>

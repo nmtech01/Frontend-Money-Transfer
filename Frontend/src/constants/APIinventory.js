@@ -8,7 +8,8 @@ export const AUTH = {
   logout:'/api/logout/',
   changePassword:'/api/change-password/',
   forgotPassword:'/api/forgot-password/',
-  resetPassword:'/api/reset-password/'
+  resetPassword:'/api/reset-password/',
+  graphApi:'/api/pie-chart/'
 };
 
 export const TRANSACTIONS={
