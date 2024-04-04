@@ -21,7 +21,7 @@ function index() {
   const [userData, setuserData] = useState(null);
   const [amount, setAmount] = useState(UPDATE_DATA?.amount??"");
   const [selectedDate, setSelectedDate] = useState(
-    moment().format("YYYY-MM-DD")
+    ""
   );
 
   console.log("selectedDateselectedDateselectedDate", selectedDate)
@@ -58,15 +58,21 @@ function index() {
       }
       return;
     }
+    if (selectedDate === "") {
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.error("Please select date");
+      }
+      return;
+    }
     if (isNaN(amount)) {
       if (!toast.isActive(toastId.current)) {
         toastId.current = toast.error("Amount must be a valid number");
       }
       return;
     }
-    if (amount<userData?.totals?.withdraw_amount) {
+    if (amount>userData?.totals?.withdraw_amount) {
       if (!toast.isActive(toastId.current)) {
-        toastId.current = toast.error("Amount should be greater then available balance");
+        toastId.current = toast.error("Amount should be less then or equal to available balance");
       }
       return;
     }

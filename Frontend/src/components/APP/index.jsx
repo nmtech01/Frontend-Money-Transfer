@@ -32,6 +32,8 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
   const [isLoading, setIsLoading] = useState(false);
   const [step2, setStep2] = useState(false);
   const [step3, setStep3] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -63,6 +65,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
     else{
       scrollToTop()
       setStep2(true)
+      setDisabled(true);
     }
   };
 
@@ -91,6 +94,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
     e.preventDefault();
     if(step2){
       setStep2(false)
+      setDisabled(false)
     }
    else{
     localStorage.removeItem('update_data')
@@ -324,6 +328,7 @@ const UPDATE_DATA=  data ?JSON.parse(data):null
                                 type="checkbox"
                                 id="toggleGAB"
                                 style={{ height: "22px", width: "40px" }}
+                                disabled={disabled}
                               />
                               <label
                                 className="form-check-label"
